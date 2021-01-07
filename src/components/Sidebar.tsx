@@ -1,4 +1,4 @@
-import { CommonData, LanguageCode } from 'api';
+import { CommonData, LanguageCode } from 'api/types';
 import { MainTitle } from 'components/MainTitle';
 import { AiOutlineMail, AiOutlinePhone, AiOutlineSend } from 'react-icons/ai';
 import styled from 'styled-components';

@@ -1,4 +1,5 @@
 import DirectusSDK from '@directus/sdk-js';
+import { API_URL } from 'api/config';
 import {
   parseAboutPageData,
   parseCommonData,
@@ -7,9 +8,6 @@ import {
   parsePagesData,
 } from 'api/parsers';
 import { DataBySlug, LanguageCode, LANGUAGES } from 'api/types';
-
-const API_URL = 'http://localhost:8055/';
-export const ASSET_URL = 'http://localhost:8055/assets/';
 
 const directus = new DirectusSDK(API_URL);
 
@@ -71,6 +69,10 @@ const pagesQuery = {
     '*.*',
     'page_data.item.*.*',
     'page_data.item.*.translations.*',
+    '*.*.galleries.preview_photo.*',
+    '*.*.galleries.preview_photo.translations.*',
+    '*.*.galleries.photos.photos_id.*',
+    '*.*.galleries.photos.sort',
     '*.*.galleries.photos.photos_id.*',
     '*.*.galleries.photos.photos_id.translations.*',
   ],

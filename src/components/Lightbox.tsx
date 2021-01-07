@@ -1,4 +1,4 @@
-import { LanguageCode, Photo } from 'api';
+import { LanguageCode, Photo } from 'api/types';
 import { BackArrow, Cross, ForwardArrow } from 'components/Icons';
 import Image from 'next/image';
 import { useRouter } from 'next/router';

@@ -1,4 +1,4 @@
-import { CommonData, FrontPageData, LanguageCode } from 'api';
+import { CommonData, FrontPageData, LanguageCode } from 'api/types';
 import { Main } from 'components/Main';
 import { MainTitle } from 'components/MainTitle';
 import { PhotoGrid } from 'components/PhotoGrid';

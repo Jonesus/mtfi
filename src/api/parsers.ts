@@ -1,3 +1,4 @@
+import { ASSET_URL } from 'api/config';
 import {
   AboutPageData,
   CommonData,
@@ -19,9 +20,9 @@ const parseTranslationData = (data: any[]) =>
   }, {});
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const parsePhoto = (assetUrl: string) => (data: any): Photo => ({
+export const parsePhoto = (data: any): Photo => ({
   ...data,
-  url: `${assetUrl}${data.image}`,
+  url: `${ASSET_URL}${data.image}`,
   translations: parseTranslationData(data.translations),
 });
 
@@ -82,11 +83,11 @@ export const parsePagesData = (data: any): PageData[] =>
         page_data: (() => {
           switch (item.template) {
             case 'front':
-              return parseFrontPageData(item.page_data[0]);
+              return parseFrontPageData(item.page_data[0].item);
             case 'about':
-              return parseAboutPageData(item.page_data[0]);
+              return parseAboutPageData(item.page_data[0].item);
             case 'galleries':
-              return parseGalleriesPageData(item.page_data[0]);
+              return parseGalleriesPageData(item.page_data[0].item);
             case 'notFound':
             default:
               return null;

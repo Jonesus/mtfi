@@ -1,4 +1,4 @@
-import { AboutPageData, CommonData, LanguageCode } from 'api';
+import { AboutPageData, CommonData, LanguageCode } from 'api/types';
 import { Main as OriginalMain } from 'components/Main';
 import { Sidebar } from 'components/Sidebar';
 import { NextPage } from 'next';
