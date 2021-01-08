@@ -1,9 +1,9 @@
+import { AboutPage } from '_pages/AboutPage';
+import { FrontPage } from '_pages/FrontPage';
+import { GalleriesPage } from '_pages/GalleriesPage';
+import { GalleryPage } from '_pages/GalleryPage';
 import { getAllPages, getPageBySlug } from 'api';
 import { LANGUAGES } from 'api/types';
-import { AboutPage } from 'components/AboutPage';
-import { FrontPage } from 'components/FrontPage';
-import { GalleriesPage } from 'components/GalleriesPage';
-import { GalleryPage } from 'components/GalleryPage';
 import { Sidebar } from 'components/Sidebar';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Error from 'pages/_error';
