@@ -7,7 +7,7 @@ import {
   parseGalleriesPageData,
   parsePagesData,
 } from 'api/parsers';
-import { DataBySlug, LanguageCode, LANGUAGES } from 'api/types';
+import { DataBySlug, LanguageCode, LANGUAGES, PageData, PageRoute } from 'api/types';
 
 const directus = new DirectusSDK(API_URL);
 
@@ -110,8 +110,36 @@ const getSlug = <
   lang: LanguageCode
 ) => a.translations[lang].slug;
 
+const getNavRoutes = (pagesData: PageData[]): PageRoute[] => {
+  const baseRoutes = pagesData.map((page) => ({
+    template: page.template,
+    translations: page.translations,
+  }));
+
+  const galleryPage = pagesData.find((page) => page.template === 'galleries');
+  if (galleryPage && galleryPage.template === 'galleries') {
+    const galleryRoutes = galleryPage.page_data.galleries.map((gallery) => ({
+      template: 'gallery' as const,
+      translations: LANGUAGES.reduce(
+        (acc, curr) => ({
+          ...acc,
+          [curr]: {
+            navigation_title: gallery.translations[curr].name,
+            slug: `/${getSlug(galleryPage, curr)}/${getSlug(gallery, curr)}`,
+          },
+        }),
+        {} as PageRoute['translations']
+      ),
+    }));
+    return [...baseRoutes, ...galleryRoutes];
+  } else {
+    return baseRoutes;
+  }
+};
+
 export const getPageBySlug = async (slug: string[] | undefined): Promise<DataBySlug> => {
   const [pages, commonData] = await Promise.all([getPages(), getCommonData()]);
+  const pageRoutes = getNavRoutes(pages);
   const notFound = {
     template: 'notFound',
     pageData: null,
@@ -127,6 +155,7 @@ export const getPageBySlug = async (slug: string[] | undefined): Promise<DataByS
           template: 'front',
           pageData: page.page_data,
           commonData,
+          pageRoutes,
           language: 'fi',
         };
       }
@@ -146,6 +175,7 @@ export const getPageBySlug = async (slug: string[] | undefined): Promise<DataByS
             template: page.template as any,
             pageData: page.page_data,
             commonData,
+            pageRoutes,
             language,
           };
         }
@@ -170,6 +200,7 @@ export const getPageBySlug = async (slug: string[] | undefined): Promise<DataByS
                 template: 'gallery',
                 pageData: gallery,
                 commonData,
+                pageRoutes,
                 language,
               };
             }

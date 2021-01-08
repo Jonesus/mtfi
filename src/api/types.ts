@@ -111,6 +111,7 @@ export type PageData = PageMetadata &
 export type CommonDataBySlug = {
   language: LanguageCode;
   commonData: CommonData;
+  pageRoutes: PageRoute[];
 };
 
 export type DataBySlug =
@@ -136,3 +137,15 @@ export type DataBySlug =
       commonData: null;
       language: null;
     };
+
+export type PageTemplate = 'front' | 'about' | 'galleries' | 'gallery';
+
+export type PageRoute = {
+  template: PageTemplate;
+  translations: {
+    [key in LanguageCode]: {
+      navigation_title: string;
+      slug: string;
+    };
+  };
+};

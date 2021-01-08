@@ -1,48 +1,80 @@
-import { CommonData, LanguageCode } from 'api/types';
+import { CommonData, LanguageCode, PageRoute, PageTemplate } from 'api/types';
+import { LanguagePicker } from 'components/LanguagePicker';
 import { MainTitle } from 'components/MainTitle';
+import Link from 'next/link';
 import { AiOutlineMail, AiOutlinePhone, AiOutlineSend } from 'react-icons/ai';
 import styled from 'styled-components';
 
 type SidebarProps = {
   commonData: CommonData;
   language: LanguageCode;
-  frontPage?: boolean;
+  pageRoutes: PageRoute[];
+  currentPage: PageTemplate;
 };
 
-export const Sidebar: React.FC<SidebarProps> = ({ commonData, language, frontPage }) => (
-  <SidebarWrapper>
-    <DesktopTitle frontPage={frontPage} {...commonData.translations[language]} />
+export const Sidebar: React.FC<SidebarProps> = ({
+  commonData,
+  language,
+  pageRoutes,
+  currentPage,
+}) => {
+  const frontPageRoute = pageRoutes.find((route) => route.template === 'front') as PageRoute;
+  const restPageRoutes = pageRoutes.filter(
+    (route) =>
+      route.template !== 'front' && route.translations[language].slug.split('/').length === 1
+  );
+  const currentRoute = pageRoutes.find((route) => route.template === currentPage);
 
-    <Navigation>
-      <LinkList>
-        <LinkListItem>About</LinkListItem>
-        <LinkListItem>Work</LinkListItem>
-        <LinkListItem>Contact</LinkListItem>
-      </LinkList>
-    </Navigation>
+  return (
+    <SidebarWrapper>
+      <DesktopTitle
+        frontPage={currentPage === 'front'}
+        title={commonData.translations[language].title}
+        subtitle={commonData.translations[language].subtitle}
+        link={frontPageRoute.translations[language].slug}
+      />
 
-    <Contacts>
-      <ContactInfo href={`tel:${commonData.phone_number}`}>
-        <PhoneIcon /> {commonData.phone_number}
-      </ContactInfo>
-      <ContactInfo href={`mailto:${commonData.email_address}`}>
-        <MailIcon /> {commonData.email_address}
-      </ContactInfo>
-      <ContactInfo href={`https://t.me/${commonData.telegram_nickname.replace('@', '')}`}>
-        <SendIcon /> {commonData.telegram_nickname}
-      </ContactInfo>
-    </Contacts>
-  </SidebarWrapper>
-);
+      <Navigation>
+        <LinkList>
+          {restPageRoutes.map((route) => (
+            <LinkListItem key={route.template}>
+              <Link href={route.translations[language].slug} passHref>
+                <NavLink className={currentPage === route.template ? 'current' : ''}>
+                  {route.translations[language].navigation_title}
+                </NavLink>
+              </Link>
+            </LinkListItem>
+          ))}
+        </LinkList>
+      </Navigation>
+
+      <div>
+        <Contacts>
+          <ContactInfo href={`tel:${commonData.phone_number}`}>
+            <PhoneIcon /> {commonData.phone_number}
+          </ContactInfo>
+          <ContactInfo href={`mailto:${commonData.email_address}`}>
+            <MailIcon /> {commonData.email_address}
+          </ContactInfo>
+          <ContactInfo href={`https://t.me/${commonData.telegram_nickname.replace('@', '')}`}>
+            <SendIcon /> {commonData.telegram_nickname}
+          </ContactInfo>
+        </Contacts>
+        <StyledLanguagePicker route={currentRoute} currentLanguage={language} />
+      </div>
+    </SidebarWrapper>
+  );
+};
 
 const SidebarWrapper = styled.header`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: var(--page-padding) 0 var(--page-padding) var(--page-padding);
 
   @media (max-width: 60rem) {
-    padding: 1rem;
+    padding: 1rem var(--page-padding);
     position: absolute;
     bottom: 0;
     z-index: 1;
@@ -67,7 +99,7 @@ const LinkList = styled.ul`
   border-left: 1px solid var(--black);
 
   @media (max-width: 60rem) {
-    padding: none;
+    padding: 0;
     border: none;
     display: flex;
     justify-content: space-between;
@@ -102,6 +134,33 @@ const Contacts = styled.address`
   }
 `;
 
+const NavLink = styled.a`
+  position: relative;
+  text-decoration: none;
+  color: var(--black);
+
+  &:after {
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    content: '';
+    display: block;
+    height: 1px;
+    left: 50%;
+    position: absolute;
+    background: var(--black);
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
+  }
+  &:not(.current):active:after,
+  &:not(.current):hover:after {
+    width: 100%;
+    left: 0;
+  }
+  &.current {
+    font-weight: 700;
+  }
+`;
+
 const ContactInfo = styled.a`
   display: inline-flex;
   align-items: center;
@@ -131,4 +190,11 @@ const SendIcon = styled(AiOutlineSend)`
 
 const PhoneIcon = styled(AiOutlinePhone)`
   transform: rotate(90deg);
+`;
+
+const StyledLanguagePicker = styled(LanguagePicker)`
+  margin-top: 1.5em;
+  @media (max-width: 60rem) {
+    margin-top: 0.5em;
+  }
 `;

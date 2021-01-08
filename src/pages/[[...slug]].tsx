@@ -2,6 +2,9 @@ import { getAllPages, getPageBySlug } from 'api';
 import { LANGUAGES } from 'api/types';
 import { AboutPage } from 'components/AboutPage';
 import { FrontPage } from 'components/FrontPage';
+import { GalleriesPage } from 'components/GalleriesPage';
+import { GalleryPage } from 'components/GalleryPage';
+import { Sidebar } from 'components/Sidebar';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Error from 'pages/_error';
 import { ParsedUrlQuery } from 'querystring';
@@ -10,26 +13,59 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
   switch (props.template) {
     case 'front':
       return (
-        <FrontPage data={props.pageData} commonData={props.commonData} language={props.language} />
+        <>
+          <Sidebar
+            commonData={props.commonData}
+            language={props.language}
+            pageRoutes={props.pageRoutes}
+            currentPage={props.template}
+          />
+          <FrontPage
+            data={props.pageData}
+            commonData={props.commonData}
+            language={props.language}
+            pageRoutes={props.pageRoutes}
+          />
+        </>
       );
 
     case 'about':
       return (
-        <AboutPage data={props.pageData} commonData={props.commonData} language={props.language} />
+        <>
+          <Sidebar
+            commonData={props.commonData}
+            language={props.language}
+            pageRoutes={props.pageRoutes}
+            currentPage={props.template}
+          />
+          <AboutPage data={props.pageData} language={props.language} />
+        </>
       );
 
     case 'galleries':
       return (
-        <div>
-          <h1>gals</h1>
-        </div>
+        <>
+          <Sidebar
+            commonData={props.commonData}
+            language={props.language}
+            pageRoutes={props.pageRoutes}
+            currentPage={props.template}
+          />
+          <GalleriesPage data={props.pageData} language={props.language} />
+        </>
       );
 
     case 'gallery':
       return (
-        <div>
-          <h1>galy</h1>
-        </div>
+        <>
+          <Sidebar
+            commonData={props.commonData}
+            language={props.language}
+            pageRoutes={props.pageRoutes}
+            currentPage={props.template}
+          />
+          <GalleryPage data={props.pageData} language={props.language} />
+        </>
       );
 
     case 'notFound':

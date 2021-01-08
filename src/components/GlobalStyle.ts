@@ -72,6 +72,10 @@ export const GlobalStyle = createGlobalStyle`
   select {
     font: inherit;
   }
+
+  a {
+    cursor: pointer;
+  }
   
   /* Remove all animations and transitions for people that prefer not to see them */
   @media (prefers-reduced-motion: reduce) {
@@ -103,6 +107,8 @@ export const GlobalStyle = createGlobalStyle`
   :root {
     --page-padding: 3rem;
     --lightbox-padding: 4rem;
+    --spacing: 3rem;
+    --bottom-padding: ;
 
     --background-light: #FBFDFD;
     --background-dark: #E6E6E6;
@@ -129,10 +135,12 @@ export const GlobalStyle = createGlobalStyle`
       grid-template-columns: unset;
       grid-auto-rows: min-content;
       position: relative;
+      --bottom-padding: 10rem;
     }
 
     @media (max-width: 40rem) {
       --page-padding: 2rem;
+      --bottom-padding: 8rem;
     }
   }
 

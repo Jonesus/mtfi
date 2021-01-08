@@ -1,6 +1,6 @@
-import { AboutPageData, CommonData, LanguageCode } from 'api/types';
+import { AboutPageData, LanguageCode } from 'api/types';
 import { Main as OriginalMain } from 'components/Main';
-import { Sidebar } from 'components/Sidebar';
+import { PageTitle } from 'components/PageTitle';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
@@ -8,44 +8,30 @@ import styled from 'styled-components';
 
 type AboutPageProps = {
   data: AboutPageData;
-  commonData: CommonData;
   language: LanguageCode;
 };
 
-export const AboutPage: NextPage<AboutPageProps> = ({ data, commonData, language }) => (
-  <>
-    <Sidebar commonData={commonData} language={language} />
+export const AboutPage: NextPage<AboutPageProps> = ({ data, language }) => (
+  <Main>
+    <PageSection>
+      <Section>
+        <Article>
+          <PageTitle>{data.translations[language].title}</PageTitle>
+          <ReactMarkdown skipHtml>{data.translations[language].text}</ReactMarkdown>
+        </Article>
+      </Section>
 
-    <Main>
-      <PageSection>
-        <Section>
-          <Article>
-            <PageTitle>{data.translations[language].title}</PageTitle>
-            <ReactMarkdown skipHtml>{data.translations[language].text}</ReactMarkdown>
-          </Article>
-        </Section>
-
-        <Aside>
-          <Image
-            src={data.highlight_photo.url}
-            alt={data.highlight_photo.translations[language].alt_text}
-            layout="fill"
-            objectFit="cover"
-          />
-        </Aside>
-      </PageSection>
-    </Main>
-  </>
+      <Aside>
+        <Image
+          src={data.highlight_photo.url}
+          alt={data.highlight_photo.translations[language].alt_text}
+          layout="fill"
+          objectFit="cover"
+        />
+      </Aside>
+    </PageSection>
+  </Main>
 );
-
-const PageTitle = styled.h1`
-  font-size: 4rem;
-  line-height: 1em;
-  font-weight: 700;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.5rem;
-`;
 
 const Main = styled(OriginalMain)`
   padding: 0;
@@ -64,7 +50,14 @@ const PageSection = styled.section`
     & aside {
       height: 50vh;
       width: calc(var(--max-text-width) - 2 * var(--page-padding));
-      margin-bottom: var(--page-padding);
+      margin-bottom: var(--bottom-padding);
+    }
+  }
+
+  @media (max-width: 40rem) {
+    & aside {
+      width: 100%;
+      height: 40vh;
     }
   }
 `;

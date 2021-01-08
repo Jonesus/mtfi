@@ -1,14 +1,24 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 type MainTitleProps = {
   title: string;
   subtitle: string;
+  link: string;
   frontPage?: boolean;
 };
 
-export const MainTitle: React.FC<MainTitleProps> = ({ title, subtitle, frontPage, ...rest }) => (
+export const MainTitle: React.FC<MainTitleProps> = ({
+  title,
+  subtitle,
+  frontPage,
+  link,
+  ...rest
+}) => (
   <TitleWrapper as={frontPage ? 'h1' : 'h2'} {...rest}>
-    <Title>{title}</Title>
+    <Link href={link} passHref>
+      <Title>{title}</Title>
+    </Link>
     <Subtitle>{subtitle}</Subtitle>
   </TitleWrapper>
 );
@@ -20,8 +30,9 @@ const TitleWrapper = styled.h1`
   --spacing: 1rem;
 `;
 
-const Title = styled.span`
+const Title = styled.a`
   display: inline-block;
+  text-decoration: none;
 
   font-size: 4em;
   line-height: 1em;

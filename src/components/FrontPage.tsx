@@ -1,8 +1,7 @@
-import { CommonData, FrontPageData, LanguageCode } from 'api/types';
+import { CommonData, FrontPageData, LanguageCode, PageRoute } from 'api/types';
 import { Main } from 'components/Main';
 import { MainTitle } from 'components/MainTitle';
 import { PhotoGrid } from 'components/PhotoGrid';
-import { Sidebar } from 'components/Sidebar';
 import { NextPage } from 'next';
 import styled from 'styled-components';
 
@@ -10,18 +9,23 @@ type FrontPageProps = {
   data: FrontPageData;
   commonData: CommonData;
   language: LanguageCode;
+  pageRoutes: PageRoute[];
 };
 
-export const FrontPage: NextPage<FrontPageProps> = ({ data, commonData, language }) => (
-  <>
-    <Sidebar commonData={commonData} language={language} frontPage />
+export const FrontPage: NextPage<FrontPageProps> = ({ data, commonData, pageRoutes, language }) => (
+  <Main>
+    <MobileTitle
+      title={commonData.translations[language].title}
+      subtitle={commonData.translations[language].subtitle}
+      frontPage
+      link={
+        (pageRoutes.find((route) => route.template === 'front') as PageRoute).translations[language]
+          .slug
+      }
+    />
 
-    <Main>
-      <MobileTitle frontPage {...commonData.translations[language]} />
-
-      <PhotoGrid photos={data.highlight_photos} language={language} />
-    </Main>
-  </>
+    <PhotoGrid photos={data.highlight_photos} language={language} />
+  </Main>
 );
 
 const MobileTitle = styled(MainTitle)`
