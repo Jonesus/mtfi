@@ -1,4 +1,5 @@
-import { LanguageCode, Photo, PhotoOrientation } from 'api/types';
+import { useAppContext } from 'api/context';
+import { Photo, PhotoOrientation } from 'api/types';
 import { Lightbox } from 'components/Lightbox';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -6,10 +7,10 @@ import styled from 'styled-components';
 
 type PhotoGridProps = {
   photos: Photo[];
-  language: LanguageCode;
 };
 
-export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, language, ...rest }) => {
+export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
+  const { language } = useAppContext();
   const router = useRouter();
   const photoQuery = Number(router.query.p);
   const focusedPhoto = photos.find((photo) => photo.id === photoQuery);
@@ -32,7 +33,7 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, language, ...rest 
           </GridItem>
         ))}
       </GridWrapper>
-      {focusedPhoto && <Lightbox photos={photos} language={language} />}
+      {focusedPhoto && <Lightbox photos={photos} />}
     </>
   );
 };

@@ -1,4 +1,5 @@
-import { CommonData, LanguageCode, Photo } from 'api/types';
+import { useAppContext } from 'api/context';
+import { Photo } from 'api/types';
 import { BackArrow, Cross, ForwardArrow } from 'components/Icons';
 import { SrOnly } from 'components/SrOnly';
 import Image from 'next/image';
@@ -8,11 +9,10 @@ import styled from 'styled-components';
 
 type LightboxProps = {
   photos: Photo[];
-  language: LanguageCode;
-  commonData: CommonData;
 };
 
-export const Lightbox: React.FC<LightboxProps> = ({ photos, commonData, language }) => {
+export const Lightbox: React.FC<LightboxProps> = ({ photos }) => {
+  const { language, commonData } = useAppContext();
   const router = useRouter();
   const photoQuery = Number(router.query.p);
   const focusedPhoto = photos.find((photo) => photo.id === photoQuery) as Photo;

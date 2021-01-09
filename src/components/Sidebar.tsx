@@ -1,4 +1,5 @@
-import { CommonData, LanguageCode, PageRoute, PageTemplate } from 'api/types';
+import { useAppContext } from 'api/context';
+import { PageRoute, PageTemplate } from 'api/types';
 import { LanguagePicker } from 'components/LanguagePicker';
 import { MainTitle } from 'components/MainTitle';
 import Link from 'next/link';
@@ -6,18 +7,12 @@ import { AiOutlineMail, AiOutlinePhone, AiOutlineSend } from 'react-icons/ai';
 import styled from 'styled-components';
 
 type SidebarProps = {
-  commonData: CommonData;
-  language: LanguageCode;
   pageRoutes: PageRoute[];
   currentPage: PageTemplate;
 };
 
-export const Sidebar: React.FC<SidebarProps> = ({
-  commonData,
-  language,
-  pageRoutes,
-  currentPage,
-}) => {
+export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => {
+  const { language, commonData } = useAppContext();
   const frontPageRoute = pageRoutes.find((route) => route.template === 'front') as PageRoute;
   const restPageRoutes = pageRoutes.filter(
     (route) =>
@@ -60,11 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <SendIcon /> {commonData.telegram_nickname}
           </ContactInfo>
         </Contacts>
-        <StyledLanguagePicker
-          route={currentRoute}
-          currentLanguage={language}
-          commonData={commonData}
-        />
+        <StyledLanguagePicker route={currentRoute} />
       </div>
     </SidebarWrapper>
   );

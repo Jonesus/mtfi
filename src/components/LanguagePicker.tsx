@@ -1,20 +1,15 @@
-import { CommonData, LanguageCode, PageRoute } from 'api/types';
+import { useAppContext } from 'api/context';
+import { LanguageCode, PageRoute } from 'api/types';
 import Link from 'next/link';
 import styled from 'styled-components';
 
 type LanguagePickerProps = {
   route?: PageRoute;
-  currentLanguage: LanguageCode;
-  commonData: CommonData;
 };
 
-export const LanguagePicker: React.FC<LanguagePickerProps> = ({
-  route,
-  currentLanguage,
-  commonData,
-  ...rest
-}) =>
-  route ? (
+export const LanguagePicker: React.FC<LanguagePickerProps> = ({ route, ...rest }) => {
+  const { language: currentLanguage, commonData } = useAppContext();
+  return route ? (
     <ListWrapper {...rest}>
       <LanguageList>
         {Object.entries(route.translations).map((entry) => (
@@ -29,6 +24,7 @@ export const LanguagePicker: React.FC<LanguagePickerProps> = ({
       </LanguageList>
     </ListWrapper>
   ) : null;
+};
 
 const ListWrapper = styled.nav`
   --link-padding: 1em;

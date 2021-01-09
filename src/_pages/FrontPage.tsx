@@ -1,4 +1,5 @@
-import { CommonData, FrontPageData, LanguageCode, PageRoute } from 'api/types';
+import { useAppContext } from 'api/context';
+import { FrontPageData, PageRoute } from 'api/types';
 import { Main } from 'components/Main';
 import { MainTitle } from 'components/MainTitle';
 import { PhotoGrid } from 'components/PhotoGrid';
@@ -7,26 +8,29 @@ import styled from 'styled-components';
 
 type FrontPageProps = {
   data: FrontPageData;
-  commonData: CommonData;
-  language: LanguageCode;
   pageRoutes: PageRoute[];
 };
 
-export const FrontPage: NextPage<FrontPageProps> = ({ data, commonData, pageRoutes, language }) => (
-  <Main>
-    <MobileTitle
-      title={commonData.translations[language].title}
-      subtitle={commonData.translations[language].subtitle}
-      frontPage
-      link={
-        (pageRoutes.find((route) => route.template === 'front') as PageRoute).translations[language]
-          .slug
-      }
-    />
+export const FrontPage: NextPage<FrontPageProps> = ({ data, pageRoutes }) => {
+  const { language, commonData } = useAppContext();
 
-    <PhotoGrid photos={data.highlight_photos} language={language} />
-  </Main>
-);
+  return (
+    <Main>
+      <MobileTitle
+        title={commonData.translations[language].title}
+        subtitle={commonData.translations[language].subtitle}
+        frontPage
+        link={
+          (pageRoutes.find((route) => route.template === 'front') as PageRoute).translations[
+            language
+          ].slug
+        }
+      />
+
+      <PhotoGrid photos={data.highlight_photos} />
+    </Main>
+  );
+};
 
 const MobileTitle = styled(MainTitle)`
   padding-bottom: calc(var(--page-padding) * 2);

@@ -1,4 +1,5 @@
-import { AboutPageData, LanguageCode } from 'api/types';
+import { useAppContext } from 'api/context';
+import { AboutPageData } from 'api/types';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
 import { NextPage } from 'next';
@@ -8,30 +9,33 @@ import styled from 'styled-components';
 
 type AboutPageProps = {
   data: AboutPageData;
-  language: LanguageCode;
 };
 
-export const AboutPage: NextPage<AboutPageProps> = ({ data, language }) => (
-  <Main>
-    <PageSection>
-      <Section>
-        <Article>
-          <PageTitle>{data.translations[language].title}</PageTitle>
-          <ReactMarkdown skipHtml>{data.translations[language].text}</ReactMarkdown>
-        </Article>
-      </Section>
+export const AboutPage: NextPage<AboutPageProps> = ({ data }) => {
+  const { language } = useAppContext();
 
-      <Aside>
-        <Image
-          src={data.highlight_photo.url}
-          alt={data.highlight_photo.translations[language].alt_text}
-          layout="fill"
-          objectFit="cover"
-        />
-      </Aside>
-    </PageSection>
-  </Main>
-);
+  return (
+    <Main>
+      <PageSection>
+        <Section>
+          <Article>
+            <PageTitle>{data.translations[language].title}</PageTitle>
+            <ReactMarkdown skipHtml>{data.translations[language].text}</ReactMarkdown>
+          </Article>
+        </Section>
+
+        <Aside>
+          <Image
+            src={data.highlight_photo.url}
+            alt={data.highlight_photo.translations[language].alt_text}
+            layout="fill"
+            objectFit="cover"
+          />
+        </Aside>
+      </PageSection>
+    </Main>
+  );
+};
 
 const Main = styled(OriginalMain)`
   padding: 0;

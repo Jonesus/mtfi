@@ -84,16 +84,6 @@ export const getPages = async () => {
   return parsedData;
 };
 
-export const getAllPages = async () => {
-  const [frontPageData, aboutPageData, galleriesPageData] = await Promise.all([
-    getFrontPage(),
-    getAboutPage(),
-    getGalleriesPage(),
-  ]);
-
-  return { frontPageData, aboutPageData, galleriesPageData };
-};
-
 const slugsAreEqual = (a: string[], b: string[]) =>
   a.length === b.length && a.every((value, index) => value === b[index]);
 
@@ -110,7 +100,7 @@ const getSlug = <
   lang: LanguageCode
 ) => a.translations[lang].slug;
 
-const getNavRoutes = (pagesData: PageData[]): PageRoute[] => {
+export const getNavRoutes = (pagesData: PageData[]): PageRoute[] => {
   const baseRoutes = pagesData.map((page) => ({
     template: page.template,
     translations: page.translations,

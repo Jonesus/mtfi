@@ -1,4 +1,5 @@
-import { GalleriesPageData, LanguageCode } from 'api/types';
+import { useAppContext } from 'api/context';
+import { GalleriesPageData } from 'api/types';
 import { GalleryPreview } from 'components/GalleryPreview';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
@@ -9,10 +10,10 @@ import styled from 'styled-components';
 
 type GalleriesPageProps = {
   data: GalleriesPageData;
-  language: LanguageCode;
 };
 
-export const GalleriesPage: NextPage<GalleriesPageProps> = ({ data, language }) => {
+export const GalleriesPage: NextPage<GalleriesPageProps> = ({ data }) => {
+  const { language } = useAppContext();
   const router = useRouter();
 
   return (

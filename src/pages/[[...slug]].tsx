@@ -2,7 +2,8 @@ import { AboutPage } from '_pages/AboutPage';
 import { FrontPage } from '_pages/FrontPage';
 import { GalleriesPage } from '_pages/GalleriesPage';
 import { GalleryPage } from '_pages/GalleryPage';
-import { getAllPages, getPageBySlug } from 'api';
+import { getNavRoutes, getPageBySlug, getPages } from 'api';
+import { AppContextProvider } from 'api/context';
 import { LANGUAGES } from 'api/types';
 import { Sidebar } from 'components/Sidebar';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
@@ -10,68 +11,37 @@ import Error from 'pages/_error';
 import { ParsedUrlQuery } from 'querystring';
 
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
-  switch (props.template) {
-    case 'front':
-      return (
-        <>
-          <Sidebar
-            commonData={props.commonData}
-            language={props.language}
-            pageRoutes={props.pageRoutes}
-            currentPage={props.template}
-          />
-          <FrontPage
-            data={props.pageData}
-            commonData={props.commonData}
-            language={props.language}
-            pageRoutes={props.pageRoutes}
-          />
-        </>
-      );
-
-    case 'about':
-      return (
-        <>
-          <Sidebar
-            commonData={props.commonData}
-            language={props.language}
-            pageRoutes={props.pageRoutes}
-            currentPage={props.template}
-          />
-          <AboutPage data={props.pageData} language={props.language} />
-        </>
-      );
-
-    case 'galleries':
-      return (
-        <>
-          <Sidebar
-            commonData={props.commonData}
-            language={props.language}
-            pageRoutes={props.pageRoutes}
-            currentPage={props.template}
-          />
-          <GalleriesPage data={props.pageData} language={props.language} />
-        </>
-      );
-
-    case 'gallery':
-      return (
-        <>
-          <Sidebar
-            commonData={props.commonData}
-            language={props.language}
-            pageRoutes={props.pageRoutes}
-            currentPage={props.template}
-          />
-          <GalleryPage data={props.pageData} language={props.language} />
-        </>
-      );
-
-    case 'notFound':
-    default:
-      return <Error statusCode={404} />;
+  if (props.template === 'notFound' || !props.template) {
+    return <Error statusCode={404} />;
   }
+
+  const pageComponent = (() => {
+    switch (props.template) {
+      case 'front':
+        return <FrontPage data={props.pageData} pageRoutes={props.pageRoutes} />;
+
+      case 'about':
+        return <AboutPage data={props.pageData} />;
+
+      case 'galleries':
+        return <GalleriesPage data={props.pageData} />;
+
+      case 'gallery':
+        return <GalleryPage data={props.pageData} />;
+    }
+  })();
+
+  return (
+    <AppContextProvider
+      value={{
+        language: props.language,
+        commonData: props.commonData,
+      }}
+    >
+      <Sidebar pageRoutes={props.pageRoutes} currentPage={props.template} />
+      {pageComponent}
+    </AppContextProvider>
+  );
 }
 
 export const getStaticProps = async (context: GetStaticPropsContext<ParsedUrlQuery>) => {
@@ -80,21 +50,14 @@ export const getStaticProps = async (context: GetStaticPropsContext<ParsedUrlQue
 };
 
 export const getStaticPaths = async () => {
-  const { galleriesPageData } = await getAllPages();
+  const pages = await getPages();
+  const routes = getNavRoutes(pages);
 
-  const galleriesBasePaths = LANGUAGES.map((lang) => ({
-    params: { slug: [galleriesPageData.translations[lang].slug] },
-  }));
-  const galleriesPaths = galleriesPageData.galleries.reduce((acc, curr) => {
-    const gallerySubPaths = LANGUAGES.map((lang) => ({
-      params: {
-        slug: [galleriesPageData.translations[lang].slug, curr.translations[lang].slug],
-      },
-    }));
-    return [...acc, ...gallerySubPaths];
-  }, galleriesBasePaths);
-
-  const paths = [{ params: { slug: [] } }, { params: { slug: ['en'] } }, ...galleriesPaths];
+  const paths = LANGUAGES.flatMap((language) =>
+    routes.map((route) => ({
+      params: { slug: route.translations[language].slug.split('/').filter((item) => item !== '') },
+    }))
+  );
 
   return { paths, fallback: true };
 };
