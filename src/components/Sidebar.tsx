@@ -60,7 +60,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <SendIcon /> {commonData.telegram_nickname}
           </ContactInfo>
         </Contacts>
-        <StyledLanguagePicker route={currentRoute} currentLanguage={language} />
+        <StyledLanguagePicker
+          route={currentRoute}
+          currentLanguage={language}
+          commonData={commonData}
+        />
       </div>
     </SidebarWrapper>
   );

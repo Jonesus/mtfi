@@ -1,20 +1,17 @@
-import { LanguageCode, PageRoute } from 'api/types';
+import { CommonData, LanguageCode, PageRoute } from 'api/types';
 import Link from 'next/link';
 import styled from 'styled-components';
 
 type LanguagePickerProps = {
   route?: PageRoute;
   currentLanguage: LanguageCode;
-};
-
-const languageTranslations = {
-  en: 'In english',
-  fi: 'Suomeksi',
+  commonData: CommonData;
 };
 
 export const LanguagePicker: React.FC<LanguagePickerProps> = ({
   route,
   currentLanguage,
+  commonData,
   ...rest
 }) =>
   route ? (
@@ -24,7 +21,7 @@ export const LanguagePicker: React.FC<LanguagePickerProps> = ({
           <ListItem key={entry[0]}>
             <Link href={entry[1].slug} passHref>
               <LanguageLink className={entry[0] === currentLanguage ? 'current' : ''}>
-                {languageTranslations[entry[0] as LanguageCode]}
+                {commonData.translations[entry[0] as LanguageCode].language_switcher_label}
               </LanguageLink>
             </Link>
           </ListItem>

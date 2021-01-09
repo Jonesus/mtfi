@@ -31,6 +31,10 @@ export type CommonData = {
       id: number;
       title: string;
       subtitle: string;
+      language_switcher_label: string;
+      lightbox_previous_photo_button: string;
+      lightbox_next_photo_button: string;
+      lightbox_close_button: string;
     };
   };
 };

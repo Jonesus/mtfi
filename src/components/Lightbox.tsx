@@ -1,5 +1,6 @@
-import { LanguageCode, Photo } from 'api/types';
+import { CommonData, LanguageCode, Photo } from 'api/types';
 import { BackArrow, Cross, ForwardArrow } from 'components/Icons';
+import { SrOnly } from 'components/SrOnly';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useKeyPressEvent } from 'react-use';
@@ -8,9 +9,10 @@ import styled from 'styled-components';
 type LightboxProps = {
   photos: Photo[];
   language: LanguageCode;
+  commonData: CommonData;
 };
 
-export const Lightbox: React.FC<LightboxProps> = ({ photos, language }) => {
+export const Lightbox: React.FC<LightboxProps> = ({ photos, commonData, language }) => {
   const router = useRouter();
   const photoQuery = Number(router.query.p);
   const focusedPhoto = photos.find((photo) => photo.id === photoQuery) as Photo;
@@ -43,8 +45,12 @@ export const Lightbox: React.FC<LightboxProps> = ({ photos, language }) => {
 
   return (
     <Overlay>
-      <IconButton onClick={previousPhoto}>
+      <IconButton
+        onClick={previousPhoto}
+        title={commonData.translations[language].lightbox_previous_photo_button}
+      >
         <BackArrow />
+        <SrOnly>{commonData.translations[language].lightbox_previous_photo_button}</SrOnly>
       </IconButton>
 
       <ImageWrapper>
@@ -62,12 +68,20 @@ export const Lightbox: React.FC<LightboxProps> = ({ photos, language }) => {
         </ImageDescription>
       </ImageWrapper>
 
-      <IconButton onClick={nextPhoto}>
+      <IconButton
+        onClick={nextPhoto}
+        title={commonData.translations[language].lightbox_next_photo_button}
+      >
         <ForwardArrow />
+        <SrOnly>{commonData.translations[language].lightbox_next_photo_button}</SrOnly>
       </IconButton>
 
-      <CrossButton onClick={closeLightbox}>
+      <CrossButton
+        onClick={closeLightbox}
+        title={commonData.translations[language].lightbox_close_button}
+      >
         <Cross />
+        <SrOnly>{commonData.translations[language].lightbox_close_button}</SrOnly>
       </CrossButton>
     </Overlay>
   );
