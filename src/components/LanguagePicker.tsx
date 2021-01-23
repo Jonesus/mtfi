@@ -2,6 +2,7 @@ import { useAppContext } from 'api/context';
 import { LanguageCode, PageRoute } from 'api/types';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { prefixWithSlash } from 'utils';
 
 type LanguagePickerProps = {
   route?: PageRoute;
@@ -14,7 +15,7 @@ export const LanguagePicker: React.FC<LanguagePickerProps> = ({ route, ...rest }
       <LanguageList>
         {Object.entries(route.translations).map((entry) => (
           <ListItem key={entry[0]}>
-            <Link href={entry[1].slug} passHref>
+            <Link href={prefixWithSlash(entry[1].slug)} passHref>
               <LanguageLink className={entry[0] === currentLanguage ? 'current' : ''}>
                 {commonData.translations[entry[0] as LanguageCode].language_switcher_label}
               </LanguageLink>

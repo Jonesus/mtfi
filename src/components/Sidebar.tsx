@@ -5,6 +5,7 @@ import { MainTitle } from 'components/MainTitle';
 import Link from 'next/link';
 import { AiOutlineMail, AiOutlinePhone, AiOutlineSend } from 'react-icons/ai';
 import styled from 'styled-components';
+import { prefixWithSlash } from 'utils';
 
 type SidebarProps = {
   pageRoutes: PageRoute[];
@@ -26,14 +27,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => 
         frontPage={currentPage === 'front'}
         title={commonData.translations[language].title}
         subtitle={commonData.translations[language].subtitle}
-        link={frontPageRoute.translations[language].slug}
+        link={prefixWithSlash(frontPageRoute.translations[language].slug)}
       />
 
       <Navigation>
         <LinkList>
           {restPageRoutes.map((route) => (
             <LinkListItem key={route.template}>
-              <Link href={route.translations[language].slug} passHref>
+              <Link href={prefixWithSlash(route.translations[language].slug)} passHref>
                 <NavLink className={currentPage === route.template ? 'current' : ''}>
                   {route.translations[language].navigation_title}
                 </NavLink>
