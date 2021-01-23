@@ -39,7 +39,6 @@ export const AboutPage: NextPage<AboutPageProps> = ({ data }) => {
 
 const Main = styled(OriginalMain)`
   padding: 0;
-  --max-text-width: 40rem;
 `;
 
 const PageSection = styled.section`

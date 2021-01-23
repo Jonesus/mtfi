@@ -3,11 +3,19 @@ import { API_URL } from 'api/config';
 import {
   parseAboutPageData,
   parseCommonData,
+  parseContactPageData,
   parseFrontPageData,
   parseGalleriesPageData,
   parsePagesData,
 } from 'api/parsers';
-import { DataBySlug, LanguageCode, LANGUAGES, PageData, PageRoute } from 'api/types';
+import {
+  ContactRequestPayload,
+  DataBySlug,
+  LanguageCode,
+  LANGUAGES,
+  PageData,
+  PageRoute,
+} from 'api/types';
 
 const directus = new DirectusSDK(API_URL);
 
@@ -60,6 +68,17 @@ export const getGalleriesPage = async () => {
     .read({ ...galleriesPageQuery, single: true });
 
   const parsedData = parseGalleriesPageData(data);
+  return parsedData;
+};
+
+const contactPageQuery = {
+  fields: ['*.*'],
+};
+
+export const getContactPage = async () => {
+  const { data } = await directus.items('contact_page').read({ ...contactPageQuery, single: true });
+
+  const parsedData = parseContactPageData(data);
   return parsedData;
 };
 
@@ -201,4 +220,8 @@ export const getPageBySlug = async (slug: string[] | undefined): Promise<DataByS
   }
 
   return notFound;
+};
+
+export const sendContactRequest = async (data: ContactRequestPayload) => {
+  return directus.items('contact_requests').create(data);
 };

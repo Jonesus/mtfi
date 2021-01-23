@@ -60,11 +60,6 @@ export const GlobalStyle = createGlobalStyle`
     display: block;
   }
   
-  /* Natural flow and rhythm in articles by default */
-  article > * + * {
-    margin-top: 1em;
-  }
-  
   /* Inherit fonts for inputs and buttons */
   input,
   button,
@@ -109,12 +104,15 @@ export const GlobalStyle = createGlobalStyle`
     --lightbox-padding: 4rem;
     --spacing: 3rem;
     --bottom-padding: ;
+    --max-text-width: 40rem;
 
     --background-light: #FBFDFD;
     --background-dark: #E6E6E6;
     --black: #000000;
     --gray: #777777;
     --text-color: #555555;
+    --warning: #B33A3A;
+    --success: #28A745;
   }
 
   div#__next {

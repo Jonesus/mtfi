@@ -1,4 +1,5 @@
 import { AboutPage } from '_pages/AboutPage';
+import { ContactPage } from '_pages/ContactPage';
 import { FrontPage } from '_pages/FrontPage';
 import { GalleriesPage } from '_pages/GalleriesPage';
 import { GalleryPage } from '_pages/GalleryPage';
@@ -28,6 +29,9 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
 
       case 'gallery':
         return <GalleryPage data={props.pageData} />;
+
+      case 'contact':
+        return <ContactPage data={props.pageData} />;
     }
   })();
 

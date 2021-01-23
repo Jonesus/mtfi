@@ -84,6 +84,24 @@ export type GalleriesPageData = {
   galleries: Gallery[];
 };
 
+export type ContactPageData = {
+  id: number;
+  date_updated: string;
+  translations: {
+    [key in LanguageCode]: {
+      title: string;
+      text: string;
+      email_field_label: string;
+      text_field_label: string;
+      submit_button_text: string;
+      form_field_empty: string;
+      form_email_invalid: string;
+      form_submit_success: string;
+      form_submit_error: string;
+    };
+  };
+};
+
 type PageMetadata = {
   id: number;
   sort: number;
@@ -110,6 +128,10 @@ export type PageData = PageMetadata &
         template: 'galleries';
         page_data: GalleriesPageData;
       }
+    | {
+        template: 'contact';
+        page_data: ContactPageData;
+      }
   );
 
 export type CommonDataBySlug = {
@@ -135,6 +157,10 @@ export type DataBySlug =
       template: 'gallery';
       pageData: Gallery;
     })
+  | (CommonDataBySlug & {
+      template: 'contact';
+      pageData: ContactPageData;
+    })
   | {
       template: 'notFound';
       pageData: null;
@@ -142,7 +168,7 @@ export type DataBySlug =
       language: null;
     };
 
-export type PageTemplate = 'front' | 'about' | 'galleries' | 'gallery';
+export type PageTemplate = 'front' | 'about' | 'galleries' | 'gallery' | 'contact';
 
 export type PageRoute = {
   template: PageTemplate;
@@ -152,4 +178,9 @@ export type PageRoute = {
       slug: string;
     };
   };
+};
+
+export type ContactRequestPayload = {
+  email: string;
+  text: string;
 };

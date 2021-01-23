@@ -2,6 +2,7 @@ import { ASSET_URL } from 'api/config';
 import {
   AboutPageData,
   CommonData,
+  ContactPageData,
   FrontPageData,
   GalleriesPageData,
   LANGUAGE_KEYS,
@@ -65,6 +66,12 @@ export const parseGalleriesPageData = (data: any): GalleriesPageData => ({
   })),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const parseContactPageData = (data: any): ContactPageData => ({
+  ...data,
+  translations: parseTranslationData(data?.translations),
+});
+
 type NullablePageData =
   | PageData
   | {
@@ -88,6 +95,8 @@ export const parsePagesData = (data: any): PageData[] =>
               return parseAboutPageData(item.page_data[0].item);
             case 'galleries':
               return parseGalleriesPageData(item.page_data[0].item);
+            case 'contact':
+              return parseContactPageData(item.page_data[0].item);
             case 'notFound':
             default:
               return null;
