@@ -103,7 +103,7 @@ export const GlobalStyle = createGlobalStyle`
     --page-padding: 3rem;
     --lightbox-padding: 4rem;
     --spacing: 3rem;
-    --bottom-padding: ;
+    --bottom-padding: var(--page-padding);
     --max-text-width: 40rem;
 
     --background-light: #FBFDFD;
