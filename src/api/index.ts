@@ -17,7 +17,7 @@ import {
   PageRoute,
 } from 'api/types';
 
-const directus = new DirectusSDK(API_URL);
+const directus = new DirectusSDK(API_URL as string);
 
 const commonDataQuery = {
   fields: ['*', 'translations.*'],
