@@ -46,6 +46,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ photos }) => {
   return (
     <Overlay>
       <IconButton
+        className="previous"
         onClick={previousPhoto}
         title={commonData.translations[language].lightbox_previous_photo_button}
       >
@@ -69,6 +70,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ photos }) => {
       </ImageWrapper>
 
       <IconButton
+        className="next"
         onClick={nextPhoto}
         title={commonData.translations[language].lightbox_next_photo_button}
       >
@@ -88,6 +90,8 @@ export const Lightbox: React.FC<LightboxProps> = ({ photos }) => {
 };
 
 const Overlay = styled.div`
+  --image-margin: 4rem;
+
   position: absolute;
   top: 0;
   left: 0;
@@ -115,6 +119,25 @@ const Overlay = styled.div`
   & > * {
     z-index: 1;
   }
+
+  @media (max-width: 60rem) {
+    --lightbox-padding: 2rem;
+    --image-margin: 2rem;
+  }
+
+  @media (max-width: 40rem) {
+    --image-margin: 0.2rem;
+    grid-template-rows: 1fr min-content;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'image image'
+      'previous next';
+
+    & button.next svg,
+    & button.previous svg {
+      height: 8rem;
+    }
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -127,7 +150,12 @@ const ImageWrapper = styled.figure`
   display: flex;
   flex-direction: column;
   height: 100%;
-  margin: 0 4rem;
+  margin: 0 var(--image-margin);
+
+  @media (max-width: 40rem) {
+    grid-column: span 2;
+    grid-area: image;
+  }
 `;
 
 const ImageDescription = styled.figcaption`
@@ -138,6 +166,10 @@ const ImageDescription = styled.figcaption`
 
   font-size: 2rem;
   color: var(--black);
+
+  @media (max-width: 40rem) {
+    margin-bottom: 1rem;
+  }
 `;
 
 const DescriptionText = styled.span`
