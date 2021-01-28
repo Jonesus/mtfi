@@ -1,4 +1,4 @@
-name: CI
+name: Automatic deploy
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: executing remote ssh commands using password
+    - name: Pull changes and redeploy website
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -19,8 +19,9 @@ jobs:
         key: ${{ secrets.DEPLOY_KEY }}
         port: ${{ secrets.PORT }}
         script: |
-          cd code/markustoivonen.fi/website
+          cd ~/code/markustoivonen.fi/website
           git pull
-          cd ..
-          make kill build run
+          cd ~/code/markustoivonen.fi
+          export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
+          make kill build deploy
           
