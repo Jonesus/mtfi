@@ -71,7 +71,7 @@ const SidebarWrapper = styled.header`
 
   @media (max-width: 60rem) {
     padding: 1rem var(--page-padding);
-    position: absolute;
+    position: fixed;
     bottom: 0;
     z-index: 1;
     background-color: var(--background-dark);

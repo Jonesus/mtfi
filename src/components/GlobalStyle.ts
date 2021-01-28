@@ -115,9 +115,16 @@ export const GlobalStyle = createGlobalStyle`
     --success: #28A745;
   }
 
+  body {
+    height: 100%;
+  }
+  html {
+    height: 100%;
+  }
+
   div#__next {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     display: grid;
     grid-template-columns: min-content 1fr;
 
@@ -130,8 +137,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Raleway';
 
     @media (max-width: 60rem) {
-      grid-template-columns: unset;
-      grid-auto-rows: min-content;
+      display: block;
       position: relative;
       --bottom-padding: 10rem;
     }
