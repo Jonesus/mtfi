@@ -1,5 +1,6 @@
 import { useAppContext } from 'api/context';
 import { GalleriesPageData } from 'api/types';
+import { Article } from 'components/Article';
 import { GalleryPreview } from 'components/GalleryPreview';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
@@ -18,7 +19,7 @@ export const GalleriesPage: NextPage<GalleriesPageProps> = ({ data }) => {
 
   return (
     <Main>
-      <GalleriesPageWrapper>
+      <Article>
         <PageTitle>{data.translations[language].title}</PageTitle>
         <GalleryList>
           {data.galleries.map((gallery) => (
@@ -31,7 +32,7 @@ export const GalleriesPage: NextPage<GalleriesPageProps> = ({ data }) => {
             </GalleryListItem>
           ))}
         </GalleryList>
-      </GalleriesPageWrapper>
+      </Article>
     </Main>
   );
 };
@@ -40,12 +41,6 @@ const Main = styled(OriginalMain)`
   display: grid;
   grid-template-columns: 1fr;
   place-items: center;
-`;
-
-const GalleriesPageWrapper = styled.article`
-  width: 100%;
-  max-width: 40rem;
-  padding-bottom: var(--bottom-padding, var(--page-padding));
 `;
 
 const GalleryList = styled.ul`

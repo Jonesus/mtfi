@@ -15,9 +15,11 @@ export const GalleryPage: NextPage<GalleryPageProps> = ({ data }) => {
 
   return (
     <Main>
-      <PageTitle>{data.translations[language].name}</PageTitle>
-      <Description>{data.translations[language].description}</Description>
-      <Photos photos={data.photos} />
+      <article>
+        <PageTitle>{data.translations[language].name}</PageTitle>
+        <Description>{data.translations[language].description}</Description>
+        <Photos photos={data.photos} />
+      </article>
     </Main>
   );
 };

@@ -16,18 +16,20 @@ export const FrontPage: NextPage<FrontPageProps> = ({ data, pageRoutes }) => {
 
   return (
     <Main>
-      <MobileTitle
-        title={commonData.translations[language].title}
-        subtitle={commonData.translations[language].subtitle}
-        frontPage
-        link={
-          (pageRoutes.find((route) => route.template === 'front') as PageRoute).translations[
-            language
-          ].slug
-        }
-      />
+      <article>
+        <MobileTitle
+          title={commonData.translations[language].title}
+          subtitle={commonData.translations[language].subtitle}
+          frontPage
+          link={
+            (pageRoutes.find((route) => route.template === 'front') as PageRoute).translations[
+              language
+            ].slug
+          }
+        />
 
-      <PhotoGrid photos={data.highlight_photos} />
+        <PhotoGrid photos={data.highlight_photos} />
+      </article>
     </Main>
   );
 };

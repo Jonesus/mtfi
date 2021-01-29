@@ -38,7 +38,9 @@ export const AboutPage: NextPage<AboutPageProps> = ({ data }) => {
 };
 
 const Main = styled(OriginalMain)`
-  padding: 0;
+  && {
+    padding: 0;
+  }
 `;
 
 const PageSection = styled.section`
@@ -53,7 +55,7 @@ const PageSection = styled.section`
     & aside {
       height: 50vh;
       width: calc(var(--max-text-width) - 2 * var(--page-padding));
-      margin-bottom: var(--bottom-padding);
+      margin-bottom: var(--page-padding);
     }
   }
 

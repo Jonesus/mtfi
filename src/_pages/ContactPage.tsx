@@ -1,14 +1,15 @@
 import { sendContactRequest } from 'api';
 import { useAppContext } from 'api/context';
 import { ContactPageData, ContactRequestPayload } from 'api/types';
+import { Article } from 'components/Article';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
 import { NextPage } from 'next';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { AiOutlineCheckCircle, AiOutlineWarning } from 'react-icons/ai';
 import ReactMarkdown from 'react-markdown';
 import styled, { css } from 'styled-components';
-import { useForm } from 'react-hook-form';
-import { AiOutlineWarning, AiOutlineCheckCircle } from 'react-icons/ai';
-import { useState } from 'react';
 
 type ContactPageProps = {
   data: ContactPageData;
@@ -116,12 +117,7 @@ const Main = styled(OriginalMain)`
   --icon-size: 1.3em;
 `;
 
-const ContactPageWrapper = styled.article`
-  width: 100%;
-  max-width: var(--max-text-width);
-  padding: var(--page-padding);
-  padding-bottom: var(--bottom-padding, var(--page-padding));
-
+const ContactPageWrapper = styled(Article)`
   & > p {
     font-size: 1.125rem;
   }
@@ -133,7 +129,6 @@ const ContactPageWrapper = styled.article`
 
 const Form = styled.form`
   position: relative;
-  padding-bottom: 3rem;
   --border-style: 1px solid var(--black);
 
   & > * + * {

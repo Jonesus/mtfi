@@ -39,9 +39,11 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
 };
 
 const GridWrapper = styled.ul`
-  --image-min-size: 20rem;
+  --image-min-size: 17rem;
 
-  min-height: 100%;
+  max-width: 70rem;
+  margin: auto;
+
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--image-min-size), 1fr));
   grid-auto-rows: var(--image-min-size);
