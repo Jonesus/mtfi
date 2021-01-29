@@ -2,6 +2,7 @@ import { useAppContext } from 'api/context';
 import { AboutPageData } from 'api/types';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
+import { SEO } from 'components/SEO';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
@@ -16,6 +17,10 @@ export const AboutPage: NextPage<AboutPageProps> = ({ data }) => {
 
   return (
     <Main>
+      <SEO
+        title={data.translations[language].title}
+        description={data.translations[language].text}
+      />
       <PageSection>
         <Section>
           <Article>

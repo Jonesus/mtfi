@@ -4,6 +4,7 @@ import { ContactPageData, ContactRequestPayload } from 'api/types';
 import { Article } from 'components/Article';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
+import { SEO } from 'components/SEO';
 import { NextPage } from 'next';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -38,6 +39,10 @@ export const ContactPage: NextPage<ContactPageProps> = ({ data }) => {
 
   return (
     <Main>
+      <SEO
+        title={data.translations[language].title}
+        description={data.translations[language].text}
+      />
       <ContactPageWrapper>
         <PageTitle>{data.translations[language].title}</PageTitle>
         <ReactMarkdown skipHtml>{data.translations[language].text}</ReactMarkdown>

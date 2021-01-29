@@ -3,6 +3,7 @@ import { FrontPageData, PageRoute } from 'api/types';
 import { Main } from 'components/Main';
 import { MainTitle } from 'components/MainTitle';
 import { PhotoGrid } from 'components/PhotoGrid';
+import { SEO } from 'components/SEO';
 import { NextPage } from 'next';
 import styled from 'styled-components';
 
@@ -16,6 +17,7 @@ export const FrontPage: NextPage<FrontPageProps> = ({ data, pageRoutes }) => {
 
   return (
     <Main>
+      <SEO />
       <article>
         <MobileTitle
           title={commonData.translations[language].title}
