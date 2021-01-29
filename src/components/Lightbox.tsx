@@ -91,6 +91,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ photos }) => {
 
 const Overlay = styled.div`
   --image-margin: 4rem;
+  --description-text-size: 2rem;
 
   position: absolute;
   top: 0;
@@ -123,6 +124,7 @@ const Overlay = styled.div`
   @media (max-width: 60rem) {
     --lightbox-padding: 2rem;
     --image-margin: 2rem;
+    --description-text-size: 1.5rem;
   }
 
   @media (max-width: 40rem) {
@@ -164,7 +166,7 @@ const ImageDescription = styled.figcaption`
   align-items: center;
   margin-top: 2rem;
 
-  font-size: 2rem;
+  font-size: var(--description-text-size);
   color: var(--black);
 
   @media (max-width: 40rem) {
