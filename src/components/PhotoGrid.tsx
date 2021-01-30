@@ -2,7 +2,6 @@ import { useAppContext } from 'api/context';
 import { Photo, PhotoOrientation } from 'api/types';
 import { AnimatedPhoto } from 'components/AnimatedPhoto';
 import { Lightbox } from 'components/Lightbox';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
