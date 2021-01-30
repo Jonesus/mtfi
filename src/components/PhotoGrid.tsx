@@ -2,6 +2,7 @@ import { useAppContext } from 'api/context';
 import { Photo, PhotoOrientation } from 'api/types';
 import { AnimatedPhoto } from 'components/AnimatedPhoto';
 import { Lightbox } from 'components/Lightbox';
+import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -34,7 +35,18 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
           </GridItem>
         ))}
       </GridWrapper>
-      {focusedPhoto && <Lightbox photos={photos} />}
+      <AnimatePresence exitBeforeEnter>
+        {focusedPhoto && (
+          <Lightbox
+            photos={photos}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            key="lightbox"
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 };

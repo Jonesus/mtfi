@@ -2,20 +2,24 @@ import { useAppContext } from 'api/context';
 import { Photo } from 'api/types';
 import { BackArrow, Cross, ForwardArrow } from 'components/Icons';
 import { SrOnly } from 'components/SrOnly';
+import { AnimatePresence, motion, MotionProps } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useKeyPressEvent } from 'react-use';
+import { forwardRef } from 'react';
+import { useKeyPressEvent, usePrevious } from 'react-use';
 import styled from 'styled-components';
 
-type LightboxProps = {
+type LightboxProps = MotionProps & {
   photos: Photo[];
 };
 
-export const Lightbox: React.FC<LightboxProps> = ({ photos }) => {
+export const Lightbox = forwardRef<HTMLDivElement, LightboxProps>(({ photos, ...rest }, ref) => {
   const { language, commonData } = useAppContext();
   const router = useRouter();
   const photoQuery = Number(router.query.p);
-  const focusedPhoto = photos.find((photo) => photo.id === photoQuery) as Photo;
+  let focusedPhoto = photos.find((photo) => photo.id === photoQuery);
+  const previousFocusedPhoto = usePrevious(focusedPhoto);
+  if (!focusedPhoto) focusedPhoto = previousFocusedPhoto;
 
   const closeLightbox = () =>
     router.push({ pathname: router.pathname, query: { slug: router.query.slug } });
@@ -43,8 +47,10 @@ export const Lightbox: React.FC<LightboxProps> = ({ photos }) => {
   useKeyPressEvent('ArrowRight', nextPhoto);
   useKeyPressEvent('ArrowLeft', previousPhoto);
 
+  if (!focusedPhoto) return null;
+
   return (
-    <Overlay>
+    <Overlay ref={ref} {...rest}>
       <IconButton
         className="previous"
         onClick={previousPhoto}
@@ -55,18 +61,32 @@ export const Lightbox: React.FC<LightboxProps> = ({ photos }) => {
       </IconButton>
 
       <ImageWrapper>
-        <ImageContainer>
-          <Image
-            src={focusedPhoto.url}
-            alt={focusedPhoto.translations[language].alt_text}
-            layout="fill"
-            objectFit="contain"
-          />
-        </ImageContainer>
-        <ImageDescription>
-          <DescriptionText>{focusedPhoto.translations[language].description}</DescriptionText>
-          <ImageCount>{`${photos.indexOf(focusedPhoto) + 1} / ${photos.length}`}</ImageCount>
-        </ImageDescription>
+        <AnimatePresence exitBeforeEnter>
+          <ImageContainer
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30, transition: { duration: 0.15 } }}
+            transition={{ duration: 0.3 }}
+            key={`photo-${focusedPhoto.id}`}
+          >
+            <Image
+              src={focusedPhoto.url}
+              alt={focusedPhoto.translations[language].alt_text}
+              layout="fill"
+              objectFit="contain"
+            />
+          </ImageContainer>
+          <ImageDescription
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.15 } }}
+            transition={{ duration: 0.3 }}
+            key={`description-${focusedPhoto.id}`}
+          >
+            <DescriptionText>{focusedPhoto.translations[language].description}</DescriptionText>
+            <ImageCount>{`${photos.indexOf(focusedPhoto) + 1} / ${photos.length}`}</ImageCount>
+          </ImageDescription>
+        </AnimatePresence>
       </ImageWrapper>
 
       <IconButton
@@ -87,9 +107,9 @@ export const Lightbox: React.FC<LightboxProps> = ({ photos }) => {
       </CrossButton>
     </Overlay>
   );
-};
+});
 
-const Overlay = styled.div`
+const Overlay = styled(motion.div)`
   --image-margin: 4rem;
   --description-text-size: 2rem;
 
@@ -113,8 +133,7 @@ const Overlay = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ffffff99;
-    backdrop-filter: blur(1rem);
+    background-color: #ffffffee;
   }
 
   & > * {
@@ -142,7 +161,7 @@ const Overlay = styled.div`
   }
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled(motion.div)`
   position: relative;
   width: 100%;
   height: 100%;
@@ -160,7 +179,7 @@ const ImageWrapper = styled.figure`
   }
 `;
 
-const ImageDescription = styled.figcaption`
+const ImageDescription = styled(motion.figure)`
   display: flex;
   justify-content: space-between;
   align-items: center;
