@@ -7,12 +7,14 @@ import { PageTitle } from 'components/PageTitle';
 import { SEO } from 'components/SEO';
 import { motion } from 'framer-motion';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineCheckCircle, AiOutlineWarning } from 'react-icons/ai';
-import ReactMarkdown from 'react-markdown';
 import styled, { css } from 'styled-components';
 import { containerTransitions, itemTransitions } from 'utils';
+
+const ReactMarkdown = dynamic(() => import('react-markdown'), { ssr: false });
 
 type ContactPageProps = {
   data: ContactPageData;

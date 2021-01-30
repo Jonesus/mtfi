@@ -1,16 +1,41 @@
-import { AboutPage } from '_pages/AboutPage';
-import { ContactPage } from '_pages/ContactPage';
-import { FrontPage } from '_pages/FrontPage';
-import { GalleriesPage } from '_pages/GalleriesPage';
-import { GalleryPage } from '_pages/GalleryPage';
 import { getNavRoutes, getPageBySlug, getPages } from 'api';
 import { AppContextProvider } from 'api/context';
-import { LANGUAGES } from 'api/types';
+import {
+  AboutPageData,
+  ContactPageData,
+  FrontPageData,
+  GalleriesPageData,
+  Gallery,
+  LANGUAGES,
+  PageRoute,
+} from 'api/types';
 import { Sidebar } from 'components/Sidebar';
 import { AnimatePresence } from 'framer-motion';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
+import dynamic from 'next/dynamic';
 import Error from 'pages/_error';
 import { ParsedUrlQuery } from 'querystring';
+
+const FrontPage = dynamic<{ data: FrontPageData; pageRoutes: PageRoute[] }>(
+  () => import('_pages/FrontPage').then((mod) => mod.FrontPage),
+  { ssr: false }
+);
+const AboutPage = dynamic<{ data: AboutPageData }>(
+  () => import('_pages/AboutPage').then((mod) => mod.AboutPage),
+  { ssr: false }
+);
+const ContactPage = dynamic<{ data: ContactPageData }>(
+  () => import('_pages/ContactPage').then((mod) => mod.ContactPage),
+  { ssr: false }
+);
+const GalleriesPage = dynamic<{ data: GalleriesPageData }>(
+  () => import('_pages/GalleriesPage').then((mod) => mod.GalleriesPage),
+  { ssr: false }
+);
+const GalleryPage = dynamic<{ data: Gallery }>(
+  () => import('_pages/GalleryPage').then((mod) => mod.GalleryPage),
+  { ssr: false }
+);
 
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
   if (props.template === 'notFound' || !props.template) {

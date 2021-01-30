@@ -6,16 +6,20 @@ import { PageTitle } from 'components/PageTitle';
 import { SEO } from 'components/SEO';
 import { motion } from 'framer-motion';
 import { NextPage } from 'next';
-import ReactMarkdown, { ReactMarkdownProps } from 'react-markdown';
+import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import { containerTransitions, itemTransitions } from 'utils';
+
+const ReactMarkdown = dynamic(() => import('react-markdown'), { ssr: false });
 
 type AboutPageProps = {
   data: AboutPageData;
 };
 
-const renderers: ReactMarkdownProps['renderers'] = {
-  paragraph: (props) => <motion.p variants={itemTransitions} key={props.value} {...props} />,
+const renderers = {
+  paragraph: (props: { value: string }) => (
+    <motion.p variants={itemTransitions} key={props.value} {...props} />
+  ),
 };
 
 export const AboutPage: NextPage<AboutPageProps> = ({ data }) => {
