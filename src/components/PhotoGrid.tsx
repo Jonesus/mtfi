@@ -1,5 +1,6 @@
 import { useAppContext } from 'api/context';
 import { Photo, PhotoOrientation } from 'api/types';
+import { AnimatedPhoto } from 'components/AnimatedPhoto';
 import { Lightbox } from 'components/Lightbox';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -21,7 +22,7 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
   return (
     <>
       <GridWrapper {...rest}>
-        {photos.map((photo) => (
+        {photos.map((photo, i) => (
           <GridItem key={photo.id} orientation={photo.gallery_orientation}>
             <HoverableImage
               src={photo.url}
@@ -29,6 +30,7 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
               layout="fill"
               objectFit="cover"
               onClick={getFocusPhoto(photo.id)}
+              staggerIndex={i}
             />
           </GridItem>
         ))}
@@ -70,7 +72,7 @@ const GridItem = styled.li<{ orientation: PhotoOrientation }>`
   }
 `;
 
-const HoverableImage = styled(Image)<{ layout?: string }>`
+const HoverableImage = styled(AnimatedPhoto)<{ layout?: string }>`
   cursor: pointer;
   transition: transform 0.4s ease-out;
   &:hover {
