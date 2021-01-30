@@ -82,23 +82,6 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
-
-  @font-face {
-    font-family: 'Raleway';
-    src: url('/fonts/Raleway-Italic-VariableFont_wght-subset.woff2') format("woff2");
-    font-weight: 1 999;
-    font-style: italic;
-    unicode-range: U+20-7E,U+C4,U+C5,U+D6,U+E4,U+E5,U+F6;
-  }
-
-  @font-face {
-    font-family: 'Raleway';
-    src: url('/fonts/Raleway-VariableFont_wght-subset.woff2') format("woff2");
-    font-weight: 1 999;
-    font-style: normal;
-    unicode-range: U+20-7E,U+C4,U+C5,U+D6,U+E4,U+E5,U+F6;
-  }
-
   :root {
     --page-padding: 3rem;
     --lightbox-padding: 4rem;
