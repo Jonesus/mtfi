@@ -2,6 +2,7 @@ import { useAppContext } from 'api/context';
 import { PageRoute, PageTemplate } from 'api/types';
 import { LanguagePicker } from 'components/LanguagePicker';
 import { MainTitle } from 'components/MainTitle';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
@@ -9,6 +10,7 @@ import { AiOutlineMail, AiOutlinePhone, AiOutlineSend } from 'react-icons/ai';
 import { usePrevious } from 'react-use';
 import styled from 'styled-components';
 import { prefixWithSlash, throttle } from 'utils';
+import { containerTransitions, itemTransitions } from 'utils';
 
 type SidebarProps = {
   pageRoutes: PageRoute[];
@@ -54,15 +56,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => 
           '--header-position': `${headerTranslation}px`,
         } as React.CSSProperties
       }
+      initial="initial"
+      animate="enter"
+      variants={containerTransitions}
     >
       <DesktopTitle
         frontPage={currentPage === 'front'}
         title={commonData.translations[language].title}
         subtitle={commonData.translations[language].subtitle}
         link={prefixWithSlash(frontPageRoute.translations[language].slug)}
+        variants={itemTransitions}
+        key="title"
       />
 
-      <Navigation>
+      <Navigation variants={itemTransitions} key="nav">
         <LinkList>
           {restPageRoutes.map((route) => (
             <LinkListItem key={route.template}>
@@ -76,7 +83,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => 
         </LinkList>
       </Navigation>
 
-      <div>
+      <motion.div variants={itemTransitions} key="contacts">
         <Contacts>
           <ContactInfo href={`tel:${commonData.phone_number}`}>
             <PhoneIcon /> {commonData.phone_number}
@@ -89,12 +96,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => 
           </ContactInfo>
         </Contacts>
         <StyledLanguagePicker route={currentRoute} />
-      </div>
+      </motion.div>
     </SidebarWrapper>
   );
 };
 
-const SidebarWrapper = styled.header`
+const SidebarWrapper = styled(motion.header)`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -119,13 +126,13 @@ const SidebarWrapper = styled.header`
   }
 `;
 
-const DesktopTitle = styled(MainTitle)`
+const DesktopTitle = motion.custom(styled(MainTitle)`
   @media (max-width: 60rem) {
     display: none;
   }
-`;
+`);
 
-const Navigation = styled.nav``;
+const Navigation = styled(motion.nav)``;
 
 const LinkList = styled.ul`
   padding-left: 1em;
@@ -175,6 +182,7 @@ const NavLink = styled.a`
   position: relative;
   text-decoration: none;
   color: var(--black);
+  transition: font-weight 0.3s ease-in-out;
 
   &:after {
     background: none repeat scroll 0 0 transparent;

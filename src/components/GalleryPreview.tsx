@@ -1,5 +1,5 @@
 import { Gallery, LanguageCode } from 'api/types';
-import Image from 'next/image';
+import { AnimatedPhoto } from 'components/AnimatedPhoto';
 import styled from 'styled-components';
 
 type GalleryPreviewProps = {
@@ -12,11 +12,12 @@ export const GalleryPreview: React.FC<GalleryPreviewProps> = ({ gallery, languag
     <>
       <GalleryTitle>{gallery.translations[language].name}</GalleryTitle>
       <PreviewImageWrapper>
-        <PreviewImage
+        <AnimatedPhoto
           src={gallery.preview_photo.url}
           alt={gallery.preview_photo.translations[language].alt_text}
           layout="fill"
           objectFit="cover"
+          opacityOnly
         />
       </PreviewImageWrapper>
     </>
@@ -30,8 +31,6 @@ const GalleryTitle = styled.h2`
   position: relative;
   display: inline-block;
 `;
-
-const PreviewImage = styled(Image)<{ layout: string }>``;
 
 const PreviewImageWrapper = styled.div`
   margin-top: 1.5rem;

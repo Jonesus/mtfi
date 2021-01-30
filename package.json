@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@directus/sdk-js": "^9.0.0-rc.31",
+    "framer-motion": "^3.2.2-rc.1",
     "next": "10.0.5",
     "react": "17.0.1",
     "react-dom": "17.0.1",

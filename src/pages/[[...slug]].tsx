@@ -7,6 +7,7 @@ import { getNavRoutes, getPageBySlug, getPages } from 'api';
 import { AppContextProvider } from 'api/context';
 import { LANGUAGES } from 'api/types';
 import { Sidebar } from 'components/Sidebar';
+import { AnimatePresence } from 'framer-motion';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Error from 'pages/_error';
 import { ParsedUrlQuery } from 'querystring';
@@ -19,19 +20,21 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
   const pageComponent = (() => {
     switch (props.template) {
       case 'front':
-        return <FrontPage data={props.pageData} pageRoutes={props.pageRoutes} />;
+        return (
+          <FrontPage data={props.pageData} pageRoutes={props.pageRoutes} key={props.template} />
+        );
 
       case 'about':
-        return <AboutPage data={props.pageData} />;
+        return <AboutPage data={props.pageData} key={props.template} />;
 
       case 'galleries':
-        return <GalleriesPage data={props.pageData} />;
+        return <GalleriesPage data={props.pageData} key={props.template} />;
 
       case 'gallery':
-        return <GalleryPage data={props.pageData} />;
+        return <GalleryPage data={props.pageData} key={props.template} />;
 
       case 'contact':
-        return <ContactPage data={props.pageData} />;
+        return <ContactPage data={props.pageData} key={props.template} />;
     }
   })();
 
@@ -43,7 +46,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
       }}
     >
       <Sidebar pageRoutes={props.pageRoutes} currentPage={props.template} />
-      {pageComponent}
+      <AnimatePresence exitBeforeEnter>{pageComponent}</AnimatePresence>
     </AppContextProvider>
   );
 }

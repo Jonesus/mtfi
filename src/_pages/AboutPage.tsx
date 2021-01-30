@@ -1,15 +1,21 @@
 import { useAppContext } from 'api/context';
 import { AboutPageData } from 'api/types';
+import { AnimatedPhoto } from 'components/AnimatedPhoto';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
 import { SEO } from 'components/SEO';
+import { motion } from 'framer-motion';
 import { NextPage } from 'next';
-import Image from 'next/image';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { ReactMarkdownProps } from 'react-markdown';
 import styled from 'styled-components';
+import { containerTransitions, itemTransitions } from 'utils';
 
 type AboutPageProps = {
   data: AboutPageData;
+};
+
+const renderers: ReactMarkdownProps['renderers'] = {
+  paragraph: (props) => <motion.p variants={itemTransitions} key={props.value} {...props} />,
 };
 
 export const AboutPage: NextPage<AboutPageProps> = ({ data }) => {
@@ -23,14 +29,19 @@ export const AboutPage: NextPage<AboutPageProps> = ({ data }) => {
       />
       <PageSection>
         <Section>
-          <Article>
-            <PageTitle>{data.translations[language].title}</PageTitle>
-            <ReactMarkdown skipHtml>{data.translations[language].text}</ReactMarkdown>
+          <Article initial="initial" animate="enter" variants={containerTransitions}>
+            <PageTitle variants={itemTransitions} key="title">
+              {data.translations[language].title}
+            </PageTitle>
+            <ReactMarkdown skipHtml renderers={renderers}>
+              {data.translations[language].text}
+            </ReactMarkdown>
           </Article>
         </Section>
 
         <Aside>
-          <Image
+          <AnimatedPhoto
+            opacityOnly
             src={data.highlight_photo.url}
             alt={data.highlight_photo.translations[language].alt_text}
             layout="fill"
@@ -81,7 +92,7 @@ const Section = styled.section`
   justify-content: center;
 `;
 
-const Article = styled.article`
+const Article = styled(motion.article)`
   padding: var(--page-padding);
   max-width: var(--max-text-width);
 

@@ -23,3 +23,20 @@ export const truncateString = (string: string, maxLength = 50) => {
     Math.min(trimmedString.length, trimmedString.lastIndexOf(' '))
   )}...`;
 };
+
+export const containerTransitions = {
+  initial: { opacity: 0 },
+  enter: {
+    opacity: 1,
+    transition: { duration: 1, ease: [0.48, 0.15, 0.25, 0.96], staggerChildren: 0.2 },
+  },
+};
+
+export const itemTransitions = {
+  initial: { y: 30, opacity: 0 },
+  enter: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1, ease: [0.48, 0.15, 0.25, 0.96] },
+  },
+};

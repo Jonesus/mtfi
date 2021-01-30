@@ -5,12 +5,14 @@ import { Article } from 'components/Article';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
 import { SEO } from 'components/SEO';
+import { motion } from 'framer-motion';
 import { NextPage } from 'next';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineCheckCircle, AiOutlineWarning } from 'react-icons/ai';
 import ReactMarkdown from 'react-markdown';
 import styled, { css } from 'styled-components';
+import { containerTransitions, itemTransitions } from 'utils';
 
 type ContactPageProps = {
   data: ContactPageData;
@@ -47,8 +49,13 @@ export const ContactPage: NextPage<ContactPageProps> = ({ data }) => {
         <PageTitle>{data.translations[language].title}</PageTitle>
         <ReactMarkdown skipHtml>{data.translations[language].text}</ReactMarkdown>
 
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <FieldWrapper>
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          initial="initial"
+          animate="enter"
+          variants={containerTransitions}
+        >
+          <FieldWrapper key="email" variants={itemTransitions}>
             <InputLabel htmlFor="email">{data.translations[language].email_field_label}</InputLabel>
             <EmailInput
               name="email"
@@ -74,7 +81,7 @@ export const ContactPage: NextPage<ContactPageProps> = ({ data }) => {
             )}
           </FieldWrapper>
 
-          <FieldWrapper>
+          <FieldWrapper key="text" variants={itemTransitions}>
             <InputLabel htmlFor="text">{data.translations[language].text_field_label}</InputLabel>
             <TextInput
               name="text"
@@ -92,9 +99,11 @@ export const ContactPage: NextPage<ContactPageProps> = ({ data }) => {
             )}
           </FieldWrapper>
 
-          <SubmitButton type="submit" disabled={!!errors.email || !!errors.text}>
-            {data.translations[language].submit_button_text}
-          </SubmitButton>
+          <motion.div key="button" variants={itemTransitions}>
+            <SubmitButton type="submit" disabled={!!errors.email || !!errors.text}>
+              {data.translations[language].submit_button_text}
+            </SubmitButton>
+          </motion.div>
 
           {submitStatus === 'success' && (
             <FormSubmitSuccess>
@@ -133,7 +142,7 @@ const ContactPageWrapper = styled(Article)`
   }
 `;
 
-const Form = styled.form`
+const Form = styled(motion.form)`
   position: relative;
   --border-style: 1px solid var(--black);
 
@@ -148,7 +157,7 @@ const InputLabel = styled.label`
   margin-bottom: 0.2em;
 `;
 
-const FieldWrapper = styled.div`
+const FieldWrapper = styled(motion.div)`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -172,7 +181,12 @@ const TextInput = styled.textarea`
   min-height: 10em;
 `;
 
-const FormError = styled.span.attrs({ role: 'alert' })`
+const FormError = styled(motion.span).attrs({
+  role: 'alert',
+  initial: 'initial',
+  animate: 'enter',
+  variants: containerTransitions,
+})`
   display: flex;
   position: absolute;
   bottom: 0;
@@ -203,7 +217,7 @@ const SuccessIcon = styled(AiOutlineCheckCircle)`
   ${iconStyles}
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled(motion.button)`
   border: var(--border-style);
   background-color: var(--background-light);
   font-size: 1.125rem;

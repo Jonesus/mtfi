@@ -1,5 +1,7 @@
 import Link from 'next/link';
+import { forwardRef } from 'react';
 import styled from 'styled-components';
+import { prefixWithSlash } from 'utils';
 
 type MainTitleProps = {
   title: string;
@@ -8,19 +10,15 @@ type MainTitleProps = {
   frontPage?: boolean;
 };
 
-export const MainTitle: React.FC<MainTitleProps> = ({
-  title,
-  subtitle,
-  frontPage,
-  link,
-  ...rest
-}) => (
-  <TitleWrapper as={frontPage ? 'h1' : 'h2'} {...rest}>
-    <Link href={link} passHref>
-      <Title>{title}</Title>
-    </Link>
-    <Subtitle>{subtitle}</Subtitle>
-  </TitleWrapper>
+export const MainTitle = forwardRef<HTMLHeadingElement, MainTitleProps>(
+  ({ title, subtitle, frontPage, link, ...rest }, ref) => (
+    <TitleWrapper as={frontPage ? 'h1' : 'h2'} {...rest} ref={ref}>
+      <Link href={prefixWithSlash(link)} passHref>
+        <Title>{title}</Title>
+      </Link>
+      <Subtitle>{subtitle}</Subtitle>
+    </TitleWrapper>
+  )
 );
 
 const TitleWrapper = styled.h1`

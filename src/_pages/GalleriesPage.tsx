@@ -5,10 +5,12 @@ import { GalleryPreview } from 'components/GalleryPreview';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
 import { SEO } from 'components/SEO';
+import { motion } from 'framer-motion';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import { containerTransitions, itemTransitions } from 'utils';
 
 type GalleriesPageProps = {
   data: GalleriesPageData;
@@ -23,9 +25,9 @@ export const GalleriesPage: NextPage<GalleriesPageProps> = ({ data }) => {
       <SEO title={data.translations[language].title} />
       <Article>
         <PageTitle>{data.translations[language].title}</PageTitle>
-        <GalleryList>
+        <GalleryList initial="initial" animate="enter" variants={containerTransitions}>
           {data.galleries.map((gallery) => (
-            <GalleryListItem key={gallery.id}>
+            <GalleryListItem key={gallery.id} variants={itemTransitions}>
               <Link href={`${router.asPath}/${gallery.translations[language].slug}`} passHref>
                 <GalleryLink>
                   <GalleryPreview gallery={gallery} language={language} />
@@ -45,11 +47,11 @@ const Main = styled(OriginalMain)`
   place-items: center;
 `;
 
-const GalleryList = styled.ul`
+const GalleryList = styled(motion.ul)`
   margin-top: var(--spacing);
 `;
 
-const GalleryListItem = styled.li`
+const GalleryListItem = styled(motion.li)`
   & + & {
     margin-top: var(--spacing);
   }

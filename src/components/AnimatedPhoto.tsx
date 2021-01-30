@@ -3,6 +3,7 @@ import { SyntheticEvent, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 type AnimatedPhotoProps = ImageProps & {
+  opacityOnly?: boolean;
   staggerIndex?: number;
 };
 
@@ -19,7 +20,11 @@ function isElementInViewport(rect: DOMRect | null) {
   }
 }
 
-export const AnimatedPhoto: React.FC<AnimatedPhotoProps> = ({ staggerIndex, ...props }) => {
+export const AnimatedPhoto: React.FC<AnimatedPhotoProps> = ({
+  staggerIndex,
+  opacityOnly,
+  ...props
+}) => {
   const [visible, setVisible] = useState(false);
   const [wrapperRect, setWrapperRect] = useState<DOMRect | null>(null);
   const wrapperRef = useCallback((node: HTMLDivElement) => {
@@ -39,6 +44,7 @@ export const AnimatedPhoto: React.FC<AnimatedPhotoProps> = ({ staggerIndex, ...p
       ref={wrapperRef}
       visible={visible}
       staggerIndex={staggerIndex}
+      opacityOnly={opacityOnly}
       skipStagger={!isElementInViewport(wrapperRect)}
     >
       <Image {...props} onLoad={onImageLoad} />;
@@ -49,6 +55,7 @@ export const AnimatedPhoto: React.FC<AnimatedPhotoProps> = ({ staggerIndex, ...p
 const TransitionWrapper = styled.div<{
   visible: boolean;
   staggerIndex?: number;
+  opacityOnly?: boolean;
   skipStagger: boolean;
 }>`
   height: 100%;
@@ -62,6 +69,7 @@ const TransitionWrapper = styled.div<{
 
   transform: translateY(var(--shift-amount));
   opacity: var(--opacity);
+  ${(p) => (p.opacityOnly ? '--shift-amount: 0' : '')}
 
   ${(p) =>
     p.visible
