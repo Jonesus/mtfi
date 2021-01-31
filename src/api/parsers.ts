@@ -24,6 +24,7 @@ const parseTranslationData = (data: any[]) =>
 export const parsePhoto = (data: any): Photo => ({
   ...data,
   url: `${ASSET_URL}${data.image}`,
+  grid_preview_url: data.grid_preview ? `${ASSET_URL}${data.grid_preview}` : null,
   translations: parseTranslationData(data.translations),
 });
 

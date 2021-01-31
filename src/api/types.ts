@@ -8,6 +8,7 @@ export type Photo = {
   id: number;
   image: string;
   url: string;
+  grid_preview_url: string | null;
   name: string;
   gallery_orientation: PhotoOrientation;
   date_created: string | null;

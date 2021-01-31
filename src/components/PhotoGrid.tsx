@@ -25,7 +25,7 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
         {photos.map((photo, i) => (
           <GridItem key={photo.id} orientation={photo.gallery_orientation}>
             <HoverableImage
-              src={photo.url}
+              src={photo.grid_preview_url || photo.url}
               alt={photo.translations[language].alt_text}
               layout="fill"
               objectFit="cover"
