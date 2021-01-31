@@ -31,6 +31,7 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
               objectFit="cover"
               onClick={getFocusPhoto(photo.id)}
               staggerIndex={i}
+              sizes={photo.gallery_orientation === 'wide' ? '50vw' : '20vw'}
             />
           </GridItem>
         ))}
@@ -53,6 +54,7 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
 
 const GridWrapper = styled.ul`
   --image-min-size: 17rem;
+  --grid-gap: 1rem;
 
   max-width: 70rem;
   margin: auto;
@@ -61,7 +63,7 @@ const GridWrapper = styled.ul`
   grid-template-columns: repeat(auto-fill, minmax(var(--image-min-size), 1fr));
   grid-auto-rows: var(--image-min-size);
   grid-auto-flow: dense;
-  gap: 1rem;
+  gap: var(--grid-gap);
 
   @media (max-width: 60rem) {
     --image-min-size: 12rem;
@@ -69,6 +71,7 @@ const GridWrapper = styled.ul`
 
   @media (max-width: 30rem) {
     --image-min-size: 8rem;
+    --grid-gap: 0.5rem;
   }
 `;
 
