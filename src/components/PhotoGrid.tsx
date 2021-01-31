@@ -53,24 +53,20 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
 };
 
 const GridWrapper = styled.ul`
-  --image-min-size: 17rem;
+  --image-min-size: 30vw;
   --grid-gap: 1rem;
 
-  max-width: 70rem;
-  margin: auto;
-
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--image-min-size), 1fr));
+  grid-template-columns: 1fr 1fr;
   grid-auto-rows: var(--image-min-size);
   grid-auto-flow: dense;
   gap: var(--grid-gap);
 
   @media (max-width: 60rem) {
-    --image-min-size: 12rem;
+    --image-min-size: 40vw;
   }
 
   @media (max-width: 30rem) {
-    --image-min-size: 8rem;
     --grid-gap: 0.5rem;
   }
 `;
