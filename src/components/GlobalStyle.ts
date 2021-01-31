@@ -91,7 +91,7 @@ export const GlobalStyle = createGlobalStyle`
     --background-light: #FBFDFD;
     --background-dark: #E6E6E6;
     --black: #000000;
-    --gray: #777777;
+    --gray: #666666;
     --text-color: #555555;
     --warning: #B33A3A;
     --success: #28A745;
