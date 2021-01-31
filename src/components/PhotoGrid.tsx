@@ -31,7 +31,7 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
               objectFit="cover"
               onClick={getFocusPhoto(photo.id)}
               staggerIndex={i}
-              sizes={photo.gallery_orientation === 'wide' ? '50vw' : '20vw'}
+              sizes={photo.gallery_orientation === 'wide' ? '80vw' : '40vw'}
             />
           </GridItem>
         ))}
