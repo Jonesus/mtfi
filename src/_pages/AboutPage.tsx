@@ -74,7 +74,7 @@ const PageSection = styled.section`
 
     & aside {
       height: 50vh;
-      width: calc(var(--max-text-width) - 2 * var(--page-padding));
+      width: calc(var(--article-width) - 2 * var(--page-padding));
       margin-bottom: var(--page-padding);
     }
   }
@@ -98,7 +98,7 @@ const Section = styled.section`
 
 const Article = styled(motion.article)`
   padding: var(--page-padding);
-  max-width: var(--max-text-width);
+  max-width: var(--article-width);
 
   & > p {
     font-size: 1.125rem;

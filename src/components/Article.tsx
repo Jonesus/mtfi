@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Article = styled.article`
   width: 100%;
-  max-width: 40rem;
+  max-width: var(--article-width);
   padding: var(--page-padding);
 
   @media (max-width: 60rem) {

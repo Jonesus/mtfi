@@ -23,7 +23,7 @@ export const GalleriesPage: NextPage<GalleriesPageProps> = ({ data }) => {
   return (
     <Main>
       <SEO title={data.translations[language].title} />
-      <Article>
+      <GalleriesArticle>
         <PageTitle>{data.translations[language].title}</PageTitle>
         <GalleryList initial="initial" animate="enter" variants={containerTransitions}>
           {data.galleries.map((gallery) => (
@@ -36,7 +36,7 @@ export const GalleriesPage: NextPage<GalleriesPageProps> = ({ data }) => {
             </GalleryListItem>
           ))}
         </GalleryList>
-      </Article>
+      </GalleriesArticle>
     </Main>
   );
 };
@@ -47,15 +47,26 @@ const Main = styled(OriginalMain)`
   place-items: center;
 `;
 
-const GalleryList = styled(motion.ul)`
-  margin-top: var(--spacing);
+const GalleriesArticle = styled(Article)`
+  --article-width: auto;
 `;
 
-const GalleryListItem = styled(motion.li)`
-  & + & {
-    margin-top: var(--spacing);
+const GalleryList = styled(motion.ul)`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: min-content;
+  gap: var(--spacing);
+
+  margin-top: var(--spacing);
+  --preview-image-height: 24vw;
+
+  @media (max-width: 40rem) {
+    grid-template-columns: 1fr;
+    --preview-image-height: 50vw;
   }
 `;
+
+const GalleryListItem = styled(motion.li)``;
 
 const GalleryLink = styled.a`
   text-decoration: none;

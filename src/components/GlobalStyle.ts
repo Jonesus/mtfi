@@ -86,7 +86,7 @@ export const GlobalStyle = createGlobalStyle`
     --page-padding: 3rem;
     --lightbox-padding: 4rem;
     --spacing: 3rem;
-    --max-text-width: 40rem;
+    --article-width: 40rem;
 
     --background-light: #FBFDFD;
     --background-dark: #E6E6E6;

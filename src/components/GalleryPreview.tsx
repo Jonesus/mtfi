@@ -35,5 +35,5 @@ const GalleryTitle = styled.h2`
 const PreviewImageWrapper = styled.div`
   margin-top: 1.5rem;
   position: relative;
-  height: 12rem;
+  height: var(--preview-image-height);
 `;
