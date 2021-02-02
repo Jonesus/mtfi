@@ -5,9 +5,6 @@ export const PageTitle = styled(motion.h1)`
   font-size: 3.5rem;
   line-height: 1em;
   font-weight: 700;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.5rem;
 
   @media (max-width: 40rem) {
     font-size: 3rem;
