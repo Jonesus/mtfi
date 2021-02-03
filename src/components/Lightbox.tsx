@@ -21,11 +21,11 @@ export const Lightbox = forwardRef<HTMLDivElement, LightboxProps>(({ photos, ...
   const previousFocusedPhoto = usePrevious(focusedPhoto);
   if (!focusedPhoto) focusedPhoto = previousFocusedPhoto;
 
-  const closeLightbox = () =>
-    router.push({ pathname: router.pathname, query: { slug: router.query.slug } });
+  const baseRoute = router.asPath.split('?')[0];
 
-  const focusPhoto = (id: number) =>
-    router.push({ pathname: router.pathname, query: { slug: router.query.slug, p: id } });
+  const closeLightbox = () => router.push({ pathname: baseRoute, query: {} });
+
+  const focusPhoto = (id: number) => router.push({ pathname: baseRoute, query: { p: id } });
 
   const nextPhoto = () => {
     if (focusedPhoto) {
@@ -60,14 +60,13 @@ export const Lightbox = forwardRef<HTMLDivElement, LightboxProps>(({ photos, ...
         <SrOnly>{commonData.translations[language].lightbox_previous_photo_button}</SrOnly>
       </IconButton>
 
-      <ImageWrapper>
-        <AnimatePresence exitBeforeEnter>
+      <AnimatePresence exitBeforeEnter>
+        <ImageWrapper key={focusedPhoto.id}>
           <ImageContainer
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30, transition: { duration: 0.15 } }}
             transition={{ duration: 0.3 }}
-            key={`photo-${focusedPhoto.id}`}
           >
             <Image
               src={focusedPhoto.url}
@@ -81,13 +80,12 @@ export const Lightbox = forwardRef<HTMLDivElement, LightboxProps>(({ photos, ...
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.15 } }}
             transition={{ duration: 0.3 }}
-            key={`description-${focusedPhoto.id}`}
           >
             <DescriptionText>{focusedPhoto.translations[language].description}</DescriptionText>
             <ImageCount>{`${photos.indexOf(focusedPhoto) + 1} / ${photos.length}`}</ImageCount>
           </ImageDescription>
-        </AnimatePresence>
-      </ImageWrapper>
+        </ImageWrapper>
+      </AnimatePresence>
 
       <IconButton
         className="next"
