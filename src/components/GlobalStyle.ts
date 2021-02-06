@@ -100,17 +100,25 @@ export const GlobalStyle = createGlobalStyle`
   html {
     height: 100%;
     height: -webkit-fill-available;
+
+
+    &:before {
+      content: '';
+      background: radial-gradient(
+        circle at top left,
+        var(--background-light) 0%,
+        var(--background-dark) 100%
+      );
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
   }
 
   body {
     height: 100%;
-
-    background: radial-gradient(
-      circle at top left,
-      var(--background-light) 0%,
-      var(--background-dark) 100%
-    );
-    background-attachment: fixed;
   }
 
   div#__next {
