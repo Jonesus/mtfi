@@ -4,13 +4,9 @@ import { LanguagePicker } from 'components/LanguagePicker';
 import { MainTitle } from 'components/MainTitle';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
 import { AiOutlineMail, AiOutlinePhone, AiOutlineSend } from 'react-icons/ai';
-import { usePrevious } from 'react-use';
 import styled from 'styled-components';
-import { prefixWithSlash, throttle } from 'utils';
-import { containerTransitions, itemTransitions } from 'utils';
+import { containerTransitions, itemTransitions, prefixWithSlash } from 'utils';
 
 type SidebarProps = {
   pageRoutes: PageRoute[];
@@ -18,7 +14,6 @@ type SidebarProps = {
 };
 
 export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => {
-  const { asPath } = useRouter();
   const { language, commonData } = useAppContext();
   const frontPageRoute = pageRoutes.find((route) => route.template === 'front') as PageRoute;
   const restPageRoutes = pageRoutes.filter(
@@ -27,39 +22,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => 
   );
   const currentRoute = pageRoutes.find((route) => route.template === currentPage);
 
-  const [mainScroll, setMainScroll] = useState(0);
-  const headerRef = useRef<HTMLElement>(null);
-  useEffect(() => {
-    let main: HTMLElement | null = null;
-    if (typeof document !== 'undefined') {
-      main = document.body.querySelector('main');
-    }
-
-    if (main) {
-      const currentMain = main;
-      const throttledSetScroll = throttle(() => setMainScroll(currentMain.scrollTop || 0), 100);
-      currentMain.addEventListener('scroll', throttledSetScroll);
-
-      return () => currentMain.removeEventListener('scroll', throttledSetScroll);
-    }
-  }, [asPath]);
-
-  const mainScrollPrevious = usePrevious(mainScroll);
-  const headerHeight = headerRef.current?.offsetHeight;
-  const headerTranslation = (mainScrollPrevious || 0) < mainScroll ? headerHeight : 0;
-
   return (
-    <SidebarWrapper
-      ref={headerRef}
-      style={
-        {
-          '--header-position': `${headerTranslation}px`,
-        } as React.CSSProperties
-      }
-      initial="initial"
-      animate="enter"
-      variants={containerTransitions}
-    >
+    <SidebarWrapper initial="initial" animate="enter" variants={containerTransitions}>
       <DesktopTitle
         frontPage={currentPage === 'front'}
         title={commonData.translations[language].title}
@@ -108,7 +72,6 @@ const SidebarWrapper = styled(motion.header)`
   justify-content: space-between;
   padding: var(--page-padding) 0 var(--page-padding) var(--page-padding);
 
-  --header-position: 0;
   transition: transform 0.5s cubic-bezier(0.5, 1, 0.89, 1);
 
   @media (max-width: 60rem) {
@@ -122,7 +85,7 @@ const SidebarWrapper = styled(motion.header)`
 
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
-    transform: translateY(var(--header-position));
+    transform: translateY(var(--header-position, 0px));
   }
 `;
 
