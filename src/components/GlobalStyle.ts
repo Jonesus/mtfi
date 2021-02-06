@@ -97,24 +97,26 @@ export const GlobalStyle = createGlobalStyle`
     --success: #28A745;
   }
 
-  body {
-    height: 100%;
-  }
   html {
     height: 100%;
+    height: -webkit-fill-available;
   }
 
-  div#__next {
-    width: 100vw;
+  body {
     height: 100%;
-    display: grid;
-    grid-template-columns: min-content 1fr;
 
     background: radial-gradient(
       circle at top left,
       var(--background-light) 0%,
       var(--background-dark) 100%
     );
+    background-attachment: fixed;
+  }
+
+  div#__next {
+    width: 100vw;
+    display: grid;
+    grid-template-columns: min-content 1fr;
 
     font-family: 'Raleway';
 
