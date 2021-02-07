@@ -39,8 +39,6 @@ export const Main: React.FC = (props) => {
       const currentScroll = window.scrollY;
       const previousScroll = previousHeaderScroll.current;
 
-      console.log({ currentScroll });
-
       if (Math.abs(currentScroll - previousScroll) < SCROLL_THRESHOLD) return;
 
       if (currentScroll > previousScroll && currentScroll > SCROLL_THRESHOLD) {
@@ -71,6 +69,7 @@ export const Main: React.FC = (props) => {
       initial="initial"
       animate="enter"
       exit="exit"
+      layout
       style={
         {
           '--navbar-height': `${navbarHeight.current}px`,
@@ -83,4 +82,8 @@ export const Main: React.FC = (props) => {
 const StyledMain = styled(motion.main)`
   padding: var(--page-padding);
   height: 100%;
+  overflow: auto;
+  @media (max-width: 60rem) {
+    overflow: hidden;
+  }
 `;

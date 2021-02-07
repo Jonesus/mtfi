@@ -2,7 +2,7 @@ import { useAppContext } from 'api/context';
 import { PageRoute, PageTemplate } from 'api/types';
 import { LanguagePicker } from 'components/LanguagePicker';
 import { MainTitle } from 'components/MainTitle';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { AiOutlineMail, AiOutlinePhone, AiOutlineSend } from 'react-icons/ai';
 import styled from 'styled-components';
@@ -23,45 +23,63 @@ export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => 
   const currentRoute = pageRoutes.find((route) => route.template === currentPage);
 
   return (
-    <SidebarWrapper initial="initial" animate="enter" variants={containerTransitions}>
-      <DesktopTitle
-        frontPage={currentPage === 'front'}
-        title={commonData.translations[language].title}
-        subtitle={commonData.translations[language].subtitle}
-        link={prefixWithSlash(frontPageRoute.translations[language].slug)}
-        variants={itemTransitions}
-        key="title"
-      />
+    <AnimatePresence exitBeforeEnter>
+      {currentPage === 'lightbox' ? (
+        <motion.div
+          key="placeholder"
+          initial="initial"
+          animate="enter"
+          exit="exit"
+          variants={containerTransitions}
+        />
+      ) : (
+        <SidebarWrapper
+          initial="initial"
+          animate="enter"
+          exit="exit"
+          variants={containerTransitions}
+          key="content"
+        >
+          <DesktopTitle
+            frontPage={currentPage === 'front'}
+            title={commonData.translations[language].title}
+            subtitle={commonData.translations[language].subtitle}
+            link={prefixWithSlash(frontPageRoute.translations[language].slug)}
+            variants={itemTransitions}
+            key="title"
+          />
 
-      <Navigation variants={itemTransitions} key="nav">
-        <LinkList>
-          {restPageRoutes.map((route) => (
-            <LinkListItem key={route.template}>
-              <Link href={prefixWithSlash(route.translations[language].slug)} passHref>
-                <NavLink className={currentPage === route.template ? 'current' : ''}>
-                  {route.translations[language].navigation_title}
-                </NavLink>
-              </Link>
-            </LinkListItem>
-          ))}
-        </LinkList>
-      </Navigation>
+          <Navigation variants={itemTransitions} key="nav">
+            <LinkList>
+              {restPageRoutes.map((route) => (
+                <LinkListItem key={route.template}>
+                  <Link href={prefixWithSlash(route.translations[language].slug)} passHref>
+                    <NavLink className={currentPage === route.template ? 'current' : ''}>
+                      {route.translations[language].navigation_title}
+                    </NavLink>
+                  </Link>
+                </LinkListItem>
+              ))}
+            </LinkList>
+          </Navigation>
 
-      <motion.div variants={itemTransitions} key="contacts">
-        <Contacts>
-          <ContactInfo href={`tel:${commonData.phone_number}`}>
-            <PhoneIcon /> {commonData.phone_number}
-          </ContactInfo>
-          <ContactInfo href={`mailto:${commonData.email_address}`}>
-            <MailIcon /> {commonData.email_address}
-          </ContactInfo>
-          <ContactInfo href={`https://t.me/${commonData.telegram_nickname.replace('@', '')}`}>
-            <SendIcon /> {commonData.telegram_nickname}
-          </ContactInfo>
-        </Contacts>
-        <StyledLanguagePicker route={currentRoute} />
-      </motion.div>
-    </SidebarWrapper>
+          <motion.div variants={itemTransitions} key="contacts">
+            <Contacts>
+              <ContactInfo href={`tel:${commonData.phone_number}`}>
+                <PhoneIcon /> {commonData.phone_number}
+              </ContactInfo>
+              <ContactInfo href={`mailto:${commonData.email_address}`}>
+                <MailIcon /> {commonData.email_address}
+              </ContactInfo>
+              <ContactInfo href={`https://t.me/${commonData.telegram_nickname.replace('@', '')}`}>
+                <SendIcon /> {commonData.telegram_nickname}
+              </ContactInfo>
+            </Contacts>
+            <StyledLanguagePicker route={currentRoute} />
+          </motion.div>
+        </SidebarWrapper>
+      )}
+    </AnimatePresence>
   );
 };
 

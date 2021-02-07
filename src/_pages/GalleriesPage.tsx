@@ -4,7 +4,6 @@ import { Article } from 'components/Article';
 import { GalleryPreview } from 'components/GalleryPreview';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
-import { SEO } from 'components/SEO';
 import { motion } from 'framer-motion';
 import { NextPage } from 'next';
 import Link from 'next/link';
@@ -22,7 +21,6 @@ export const GalleriesPage: NextPage<GalleriesPageProps> = ({ data }) => {
 
   return (
     <Main>
-      <SEO title={data.translations[language].title} />
       <GalleriesArticle>
         <PageTitle>{data.translations[language].title}</PageTitle>
         <GalleryList initial="initial" animate="enter" variants={containerTransitions}>

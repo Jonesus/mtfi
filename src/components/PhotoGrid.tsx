@@ -1,8 +1,6 @@
 import { useAppContext } from 'api/context';
 import { Photo, PhotoOrientation } from 'api/types';
 import { AnimatedPhoto } from 'components/AnimatedPhoto';
-import { Lightbox } from 'components/Lightbox';
-import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -13,11 +11,9 @@ type PhotoGridProps = {
 export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
   const { language } = useAppContext();
   const router = useRouter();
-  const photoQuery = Number(router.query.p);
-  const focusedPhoto = photos.find((photo) => photo.id === photoQuery);
 
-  const getFocusPhoto = (id: number) => () =>
-    router.push({ pathname: router.pathname, query: { slug: router.query.slug, p: id } });
+  const baseRoute = router.asPath === '/' ? '' : router.asPath;
+  const getFocusPhoto = (id: number) => () => router.push({ pathname: `${baseRoute}/p/${id}` });
 
   return (
     <>
@@ -36,18 +32,6 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({ photos, ...rest }) => {
           </GridItem>
         ))}
       </GridWrapper>
-      <AnimatePresence exitBeforeEnter>
-        {focusedPhoto && (
-          <Lightbox
-            photos={photos}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            key="lightbox"
-          />
-        )}
-      </AnimatePresence>
     </>
   );
 };

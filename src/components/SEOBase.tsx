@@ -6,9 +6,10 @@ import { truncateString } from 'utils';
 type SEOProps = {
   title?: string;
   description?: string;
+  image?: string;
 };
 
-export const SEO: React.FC<SEOProps> = ({ title, description }) => {
+export const SEOBase: React.FC<SEOProps> = ({ title, description, image }) => {
   const { language, commonData } = useAppContext();
 
   useEffect(() => {
@@ -39,10 +40,12 @@ export const SEO: React.FC<SEOProps> = ({ title, description }) => {
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={fullDescription} />
       <meta property="og:locale" content={language} />
+      {image ? <meta property="og:image" content={image} /> : null}
 
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={fullDescription} />
+      {image ? <meta property="twitter:image" content={image} /> : null}
     </Head>
   );
 };

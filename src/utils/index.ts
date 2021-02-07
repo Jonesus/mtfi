@@ -30,6 +30,10 @@ export const containerTransitions = {
     opacity: 1,
     transition: { duration: 1, ease: [0.48, 0.15, 0.25, 0.96], staggerChildren: 0.2 },
   },
+  exit: {
+    opacity: 0,
+    transition: { duration: 0.2, ease: [0.48, 0.15, 0.25, 0.96] },
+  },
 };
 
 export const itemTransitions = {
@@ -38,5 +42,9 @@ export const itemTransitions = {
     opacity: 1,
     y: 0,
     transition: { duration: 1, ease: [0.48, 0.15, 0.25, 0.96] },
+  },
+  exit: {
+    opacity: 0,
+    transition: { duration: 0.2, ease: [0.48, 0.15, 0.25, 0.96] },
   },
 };

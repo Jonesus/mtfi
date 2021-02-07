@@ -103,6 +103,11 @@ export type ContactPageData = {
   };
 };
 
+export type LightboxData = {
+  photos: Photo[];
+  currentPhoto: number;
+};
+
 type PageMetadata = {
   id: number;
   sort: number;
@@ -162,6 +167,10 @@ export type DataBySlug =
       template: 'contact';
       pageData: ContactPageData;
     })
+  | (CommonDataBySlug & {
+      template: 'lightbox';
+      pageData: LightboxData;
+    })
   | {
       template: 'notFound';
       pageData: null;
@@ -169,9 +178,10 @@ export type DataBySlug =
       language: null;
     };
 
-export type PageTemplate = 'front' | 'about' | 'galleries' | 'gallery' | 'contact';
+export type PageTemplate = 'front' | 'about' | 'galleries' | 'gallery' | 'contact' | 'lightbox';
 
 export type PageRoute = {
+  id: number;
   template: PageTemplate;
   translations: {
     [key in LanguageCode]: {

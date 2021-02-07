@@ -7,8 +7,10 @@ import {
   GalleriesPageData,
   Gallery,
   LANGUAGES,
+  LightboxData,
   PageRoute,
 } from 'api/types';
+import { SEOWrapper } from 'components/SEOWrapper';
 import { Sidebar } from 'components/Sidebar';
 import { AnimatePresence } from 'framer-motion';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
@@ -36,6 +38,10 @@ const GalleryPage = dynamic<{ data: Gallery }>(
   () => import('_pages/GalleryPage').then((mod) => mod.GalleryPage),
   { ssr: false }
 );
+const LightboxPage = dynamic<{ data: LightboxData }>(
+  () => import('_pages/LightboxPage').then((mod) => mod.LightboxPage),
+  { ssr: false }
+);
 
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
   if (props.template === 'notFound' || !props.template) {
@@ -60,6 +66,9 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
 
       case 'contact':
         return <ContactPage data={props.pageData} key={props.template} />;
+
+      case 'lightbox':
+        return <LightboxPage data={props.pageData} key={props.template} />;
     }
   })();
 
@@ -70,6 +79,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
         commonData: props.commonData,
       }}
     >
+      <SEOWrapper data={props} />
       <Sidebar pageRoutes={props.pageRoutes} currentPage={props.template} />
       <AnimatePresence exitBeforeEnter>{pageComponent}</AnimatePresence>
     </AppContextProvider>
@@ -85,11 +95,53 @@ export const getStaticPaths = async () => {
   const pages = await getPages();
   const routes = getNavRoutes(pages);
 
-  const paths = LANGUAGES.flatMap((language) =>
-    routes.map((route) => ({
-      params: { slug: route.translations[language].slug.split('/').filter((item) => item !== '') },
-    }))
-  );
+  const paths = LANGUAGES.map((language) =>
+    routes.map((route) => {
+      const baseRoute = {
+        params: {
+          slug: route.translations[language].slug.split('/').filter((item) => item !== ''),
+        },
+      };
+
+      if (route.template === 'front') {
+        return [
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          (pages.find((page) => page.template === 'front')!
+            .page_data as FrontPageData).highlight_photos.map((photo) => ({
+            params: {
+              slug: [
+                ...route.translations[language].slug.split('/').filter((item) => item !== ''),
+                'p',
+                `${photo.id}`,
+              ],
+            },
+          })),
+          baseRoute,
+        ];
+      }
+
+      if (route.template === 'gallery') {
+        return [
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          ((pages.find((page) => page.template === 'galleries')!
+            .page_data as GalleriesPageData).galleries.find(
+            (gallery) => gallery.id === route.id
+          )! as Gallery).photos.map((photo) => ({
+            params: {
+              slug: [
+                ...route.translations[language].slug.split('/').filter((item) => item !== ''),
+                'p',
+                `${photo.id}`,
+              ],
+            },
+          })),
+          baseRoute,
+        ];
+      }
+
+      return baseRoute;
+    })
+  ).flat(5);
 
   return { paths, fallback: true };
 };

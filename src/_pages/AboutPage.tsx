@@ -3,7 +3,6 @@ import { AboutPageData } from 'api/types';
 import { AnimatedPhoto } from 'components/AnimatedPhoto';
 import { Main as OriginalMain } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
-import { SEO } from 'components/SEO';
 import { motion } from 'framer-motion';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
@@ -27,10 +26,6 @@ export const AboutPage: NextPage<AboutPageProps> = ({ data }) => {
 
   return (
     <Main>
-      <SEO
-        title={data.translations[language].title}
-        description={data.translations[language].text}
-      />
       <PageSection>
         <Section>
           <Article initial="initial" animate="enter" variants={containerTransitions}>

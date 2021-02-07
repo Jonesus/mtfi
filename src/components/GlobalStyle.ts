@@ -114,6 +114,7 @@ export const GlobalStyle = createGlobalStyle`
       left: 0;
       right: 0;
       bottom: 0;
+      z-index: -1; 
     }
   }
 
@@ -125,12 +126,14 @@ export const GlobalStyle = createGlobalStyle`
     width: 100vw;
     display: grid;
     grid-template-columns: min-content 1fr;
+    grid-template-rows: 100vh;
 
     font-family: 'Raleway';
 
     @media (max-width: 60rem) {
       display: block;
       position: relative;
+      height: auto;
     }
 
     @media (max-width: 40rem) {

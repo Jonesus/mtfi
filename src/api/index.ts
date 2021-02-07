@@ -121,6 +121,7 @@ const getSlug = <
 
 export const getNavRoutes = (pagesData: PageData[]): PageRoute[] => {
   const baseRoutes = pagesData.map((page) => ({
+    id: page.id,
     template: page.template,
     translations: page.translations,
   }));
@@ -128,6 +129,7 @@ export const getNavRoutes = (pagesData: PageData[]): PageRoute[] => {
   const galleryPage = pagesData.find((page) => page.template === 'galleries');
   if (galleryPage && galleryPage.template === 'galleries') {
     const galleryRoutes = galleryPage.page_data.galleries.map((gallery) => ({
+      id: gallery.id,
       template: 'gallery' as const,
       translations: LANGUAGES.reduce(
         (acc, curr) => ({
@@ -146,7 +148,7 @@ export const getNavRoutes = (pagesData: PageData[]): PageRoute[] => {
   }
 };
 
-export const getPageBySlug = async (slug: string[] | undefined): Promise<DataBySlug> => {
+export const getPageBySlug = async (originalSlug: string[] | undefined): Promise<DataBySlug> => {
   const [pages, commonData] = await Promise.all([getPages(), getCommonData()]);
   const pageRoutes = getNavRoutes(pages);
   const notFound = {
@@ -156,17 +158,43 @@ export const getPageBySlug = async (slug: string[] | undefined): Promise<DataByS
     language: null,
   } as const;
 
+  const lightboxIndex = originalSlug?.indexOf('p');
+  let slug: typeof originalSlug = undefined;
+  let lightboxSlug: typeof originalSlug = undefined;
+  if (lightboxIndex !== undefined && lightboxIndex !== -1) {
+    slug = originalSlug?.slice(0, lightboxIndex);
+    if (slug?.length === 0) {
+      slug = undefined;
+    }
+    lightboxSlug = originalSlug?.slice(lightboxIndex);
+  } else {
+    slug = originalSlug;
+  }
+
   if (slug === undefined) {
     for (let i = 0; i < pages.length; i++) {
       const page = pages[i];
       if (page.template === 'front') {
-        return {
-          template: 'front',
-          pageData: page.page_data,
-          commonData,
-          pageRoutes,
-          language: 'fi',
-        };
+        if (lightboxSlug) {
+          return {
+            template: 'lightbox',
+            pageData: {
+              photos: page.page_data.highlight_photos,
+              currentPhoto: Number(lightboxSlug[1]),
+            },
+            commonData,
+            pageRoutes,
+            language: 'fi',
+          };
+        } else {
+          return {
+            template: 'front',
+            pageData: page.page_data,
+            commonData,
+            pageRoutes,
+            language: 'fi',
+          };
+        }
       }
     }
     return notFound;
@@ -179,14 +207,27 @@ export const getPageBySlug = async (slug: string[] | undefined): Promise<DataByS
         const language = LANGUAGES[j];
         const pageSlug = getSlug(page, language);
         if (slugsAreEqual(slug, [pageSlug])) {
-          return {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            template: page.template as any,
-            pageData: page.page_data,
-            commonData,
-            pageRoutes,
-            language,
-          };
+          if (lightboxSlug && page.template === 'front') {
+            return {
+              template: 'lightbox',
+              pageData: {
+                photos: page.page_data.highlight_photos,
+                currentPhoto: Number(lightboxSlug[1]),
+              },
+              commonData,
+              pageRoutes,
+              language,
+            };
+          } else {
+            return {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              template: page.template as any,
+              pageData: page.page_data,
+              commonData,
+              pageRoutes,
+              language,
+            };
+          }
         }
       }
     }
@@ -205,13 +246,26 @@ export const getPageBySlug = async (slug: string[] | undefined): Promise<DataByS
             const gallerySlug = getSlug(gallery, language);
 
             if (slugsAreEqual([galleriesSlug, gallerySlug], slug)) {
-              return {
-                template: 'gallery',
-                pageData: gallery,
-                commonData,
-                pageRoutes,
-                language,
-              };
+              if (lightboxSlug) {
+                return {
+                  template: 'lightbox',
+                  pageData: {
+                    photos: gallery.photos,
+                    currentPhoto: Number(lightboxSlug[1]),
+                  },
+                  commonData,
+                  pageRoutes,
+                  language,
+                };
+              } else {
+                return {
+                  template: 'gallery',
+                  pageData: gallery,
+                  commonData,
+                  pageRoutes,
+                  language,
+                };
+              }
             }
           }
         }

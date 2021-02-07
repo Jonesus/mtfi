@@ -3,7 +3,6 @@ import { Gallery } from 'api/types';
 import { Main } from 'components/Main';
 import { PageTitle } from 'components/PageTitle';
 import { PhotoGrid } from 'components/PhotoGrid';
-import { SEO } from 'components/SEO';
 import { NextPage } from 'next';
 import styled from 'styled-components';
 
@@ -16,10 +15,6 @@ export const GalleryPage: NextPage<GalleryPageProps> = ({ data }) => {
 
   return (
     <Main>
-      <SEO
-        title={data.translations[language].name}
-        description={data.translations[language].description}
-      />
       <article>
         <PageTitle>{data.translations[language].name}</PageTitle>
         <Description>{data.translations[language].description}</Description>
