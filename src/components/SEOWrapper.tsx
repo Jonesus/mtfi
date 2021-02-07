@@ -1,9 +1,20 @@
+import { PROD_URL } from 'api/config';
 import { useAppContext } from 'api/context';
 import { DataBySlug } from 'api/types';
 import { SEOBase } from 'components/SEOBase';
 
 type SEOWrapperProps = {
   data: DataBySlug;
+};
+
+const getImageUrl = (url?: string) => {
+  if (!url) return '';
+  const urlBase = PROD_URL;
+  const urlParts = url.split('/');
+  const assetsIndex = urlParts.indexOf('assets');
+  const assetParts = urlParts.slice(assetsIndex);
+  const assetUrl = assetParts.join('/');
+  return `${urlBase}${assetUrl}`;
 };
 
 export const SEOWrapper: React.FC<SEOWrapperProps> = ({ data }) => {
@@ -29,7 +40,7 @@ export const SEOWrapper: React.FC<SEOWrapperProps> = ({ data }) => {
         <SEOBase
           title={data.pageData.translations[language].name}
           description={data.pageData.translations[language].description}
-          image={data.pageData.preview_photo.url}
+          image={getImageUrl(data.pageData.preview_photo.url)}
         />
       );
 
@@ -40,7 +51,9 @@ export const SEOWrapper: React.FC<SEOWrapperProps> = ({ data }) => {
             data.pageData.photos.find((photo) => photo.id === data.pageData.currentPhoto)
               ?.translations[language].description
           }
-          image={data.pageData.photos.find((photo) => photo.id === data.pageData.currentPhoto)?.url}
+          image={getImageUrl(
+            data.pageData.photos.find((photo) => photo.id === data.pageData.currentPhoto)?.url
+          )}
         />
       );
 
