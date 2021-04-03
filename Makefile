@@ -28,6 +28,6 @@ run-backend:
 	$(COMPOSE) run wait -c ${DB_HOST}:${DB_PORT} -c ${API_HOST}:${API_PORT}
 
 kill:
-	docker-compose kill mtfi-database mtfi-cms mtfi-web caddy
+	docker-compose kill
 
 deploy:	install run-backend build run
