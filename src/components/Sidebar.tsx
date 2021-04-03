@@ -4,7 +4,7 @@ import { LanguagePicker } from 'components/LanguagePicker';
 import { MainTitle } from 'components/MainTitle';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
-import { AiOutlineMail, AiOutlinePhone, AiOutlineSend } from 'react-icons/ai';
+import { AiOutlineInstagram, AiOutlineMail, AiOutlinePhone } from 'react-icons/ai';
 import styled from 'styled-components';
 import { containerTransitions, itemTransitions, prefixWithSlash } from 'utils';
 
@@ -72,7 +72,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => 
                 <MailIcon /> {commonData.email_address}
               </ContactInfo>
               <ContactInfo href={`https://t.me/${commonData.telegram_nickname.replace('@', '')}`}>
-                <SendIcon /> {commonData.telegram_nickname}
+                <InstagramIcon /> {commonData.telegram_nickname}
               </ContactInfo>
             </Contacts>
             <StyledLanguagePicker route={currentRoute} />
@@ -210,9 +210,7 @@ const ContactInfo = styled.a`
 
 const MailIcon = styled(AiOutlineMail)``;
 
-const SendIcon = styled(AiOutlineSend)`
-  transform: rotate(-45deg);
-`;
+const InstagramIcon = styled(AiOutlineInstagram)``;
 
 const PhoneIcon = styled(AiOutlinePhone)`
   transform: rotate(90deg);
