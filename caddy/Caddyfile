@@ -1,0 +1,12 @@
+localhost {
+    route /api/* {
+        uri strip_prefix /api
+        reverse_proxy mtfi-cms:8055
+    }
+    route /assets/* {
+        reverse_proxy mtfi-cms:8055
+    }
+
+    reverse_proxy mtfi-web:3000
+}
+

@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  mtfi-cms:
+    ports:
+      - 8055:8055
+
+  mtfi-web:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 3000:3000

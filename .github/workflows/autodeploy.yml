@@ -2,7 +2,7 @@ name: Automatic deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -11,17 +11,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Pull changes and redeploy website
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.DEPLOY_KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-          cd ~/code/markustoivonen.fi/website
-          git pull
-          cd ~/code/markustoivonen.fi
-          export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
-          make kill build deploy
-          
+      - name: Pull changes and redeploy website
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: ${{ secrets.PORT }}
+          script:

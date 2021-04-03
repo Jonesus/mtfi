@@ -4,3 +4,7 @@
 node_modules/         # Installed inside container
 .dockerignore
 Dockerfile
+
+database/
+directus/
+caddy/
