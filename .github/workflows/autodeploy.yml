@@ -21,4 +21,5 @@ jobs:
           script: |
             cd /srv/www/mtfi
             git pull
+            export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
             make deploy
