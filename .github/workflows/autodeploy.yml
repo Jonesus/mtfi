@@ -22,4 +22,6 @@ jobs:
             cd /srv/www/mtfi
             git pull
             export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             make deploy
