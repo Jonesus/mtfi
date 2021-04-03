@@ -1,0 +1,64 @@
+version: '3.4'
+
+services:
+  mtfi-database:
+    container_name: mtfi-database
+    image: mariadb:10.5
+    volumes:
+      - ./database:/var/lib/mysql
+      - ./directus:/docker-entrypoint-initdb.d
+    env_file:
+      - .env
+    networks:
+      - mtfi
+    restart: unless-stopped
+
+  mtfi-cms:
+    container_name: mtfi-cms
+    image: directus/directus:v9.0.0-rc.31
+    volumes:
+      - ./directus/extensions:/directus/extensions
+      - ./directus/uploads:/directus/uploads
+    depends_on:
+      - mtfi-database
+    env_file:
+      - .env
+    networks:
+      - mtfi
+    restart: unless-stopped
+
+  mtfi-web:
+    container_name: mtfi-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: mtfi_mtfi
+    depends_on:
+      - mtfi-cms
+    env_file:
+      - .env
+    networks:
+      - mtfi
+    restart: unless-stopped
+
+  mtfi-caddy:
+    container_name: mtfi-caddy
+    image: caddy:2.3.0-alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/data:/data
+      - ./caddy/config:/config
+    networks:
+      - mtfi
+    restart: unless-stopped
+
+  wait:
+    image: dokku/wait
+    networks:
+      - mtfi
+
+networks:
+  mtfi:
