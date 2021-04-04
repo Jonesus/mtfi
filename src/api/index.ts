@@ -121,7 +121,7 @@ const getSlug = <
 
 export const getNavRoutes = (pagesData: PageData[]): PageRoute[] => {
   const baseRoutes = pagesData.map((page) => ({
-    id: page.id,
+    id: page.page_data.id,
     template: page.template,
     translations: page.translations,
   }));
@@ -179,6 +179,7 @@ export const getPageBySlug = async (originalSlug: string[] | undefined): Promise
           return {
             template: 'lightbox',
             pageData: {
+              id: Number(lightboxSlug[1]),
               photos: page.page_data.highlight_photos,
               currentPhoto: Number(lightboxSlug[1]),
             },
@@ -211,6 +212,7 @@ export const getPageBySlug = async (originalSlug: string[] | undefined): Promise
             return {
               template: 'lightbox',
               pageData: {
+                id: Number(lightboxSlug[1]),
                 photos: page.page_data.highlight_photos,
                 currentPhoto: Number(lightboxSlug[1]),
               },
@@ -250,6 +252,7 @@ export const getPageBySlug = async (originalSlug: string[] | undefined): Promise
                 return {
                   template: 'lightbox',
                   pageData: {
+                    id: Number(lightboxSlug[1]),
                     photos: gallery.photos,
                     currentPhoto: Number(lightboxSlug[1]),
                   },

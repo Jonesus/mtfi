@@ -41,11 +41,13 @@ export type CommonData = {
 };
 
 export type FrontPageData = {
+  id: number;
   date_updated: Date | null;
   highlight_photos: Photo[];
 };
 
 export type AboutPageData = {
+  id: number;
   date_updated: Date | null;
   highlight_photo: Photo;
   translations: {
@@ -75,6 +77,7 @@ export type Gallery = {
 };
 
 export type GalleriesPageData = {
+  id: number;
   date_updated: string | null;
   translations: {
     [key in LanguageCode]: {
@@ -104,6 +107,7 @@ export type ContactPageData = {
 };
 
 export type LightboxData = {
+  id: number;
   photos: Photo[];
   currentPhoto: number;
 };

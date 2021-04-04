@@ -13,15 +13,17 @@ export const LanguagePicker: React.FC<LanguagePickerProps> = ({ route, ...rest }
   return route ? (
     <ListWrapper {...rest}>
       <LanguageList>
-        {Object.entries(route.translations).map((entry) => (
-          <ListItem key={entry[0]}>
-            <Link href={prefixWithSlash(entry[1].slug)} passHref>
-              <LanguageLink className={entry[0] === currentLanguage ? 'current' : ''}>
-                {commonData.translations[entry[0] as LanguageCode].language_switcher_label}
-              </LanguageLink>
-            </Link>
-          </ListItem>
-        ))}
+        {Object.entries(route.translations)
+          .sort((a, b) => b[0].localeCompare(a[0]))
+          .map((entry) => (
+            <ListItem key={entry[0]}>
+              <Link href={prefixWithSlash(entry[1].slug)} passHref>
+                <LanguageLink className={entry[0] === currentLanguage ? 'current' : ''}>
+                  {commonData.translations[entry[0] as LanguageCode].language_switcher_label}
+                </LanguageLink>
+              </Link>
+            </ListItem>
+          ))}
       </LanguageList>
     </ListWrapper>
   ) : null;

@@ -77,6 +77,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
       value={{
         language: props.language,
         commonData: props.commonData,
+        pageId: props.pageData.id,
       }}
     >
       <SEOWrapper data={props} />

@@ -14,13 +14,17 @@ type SidebarProps = {
 };
 
 export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => {
-  const { language, commonData } = useAppContext();
+  const { language, commonData, pageId } = useAppContext();
   const frontPageRoute = pageRoutes.find((route) => route.template === 'front') as PageRoute;
   const restPageRoutes = pageRoutes.filter(
     (route) =>
       route.template !== 'front' && route.translations[language].slug.split('/').length === 1
   );
-  const currentRoute = pageRoutes.find((route) => route.template === currentPage);
+  const currentRoute = pageRoutes.find(
+    (route) => route.template === currentPage && route.id === pageId
+  );
+  console.log(pageId);
+  console.log(pageRoutes);
 
   return (
     <AnimatePresence exitBeforeEnter>

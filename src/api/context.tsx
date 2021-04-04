@@ -4,6 +4,7 @@ import { createContext, useContext } from 'react';
 type AppContext = {
   language: LanguageCode;
   commonData: CommonData;
+  pageId: number;
 };
 
 const context = createContext({} as AppContext);
