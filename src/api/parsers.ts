@@ -24,12 +24,15 @@ const parseTranslationData = (data: any[]) =>
     : Object.fromEntries(LANGUAGES.map((lang) => [lang, {}]));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const parsePhoto = (data: any): Photo => ({
-  ...data,
-  url: `${ASSET_URL}${data.image}`,
-  grid_preview_url: data.grid_preview ? `${ASSET_URL}${data.grid_preview}` : null,
-  translations: parseTranslationData(data.translations),
-});
+export const parsePhoto = (data: any): Photo =>
+  data
+    ? {
+        ...data,
+        url: `${ASSET_URL}${data.image}`,
+        grid_preview_url: data.grid_preview ? `${ASSET_URL}${data.grid_preview}` : null,
+        translations: parseTranslationData(data.translations),
+      }
+    : {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const parseCommonData = (data: any): CommonData => ({
@@ -50,7 +53,7 @@ export const parseFrontPageData = (data: any): FrontPageData => ({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const parseAboutPageData = (data: any): AboutPageData => ({
   ...data,
-  highlight_photo: parsePhoto(data?.highlight_photo[0]),
+  highlight_photo: data?.highlight_photo?.[0] ? parsePhoto(data?.highlight_photo[0]) : null,
   translations: parseTranslationData(data?.translations),
 });
 
@@ -60,7 +63,7 @@ export const parseGalleriesPageData = (data: any): GalleriesPageData => ({
   translations: parseTranslationData(data?.translations),
   galleries: data?.galleries.map((gallery: any) => ({
     ...gallery,
-    preview_photo: parsePhoto(gallery.preview_photo),
+    preview_photo: gallery.preview_photo ? parsePhoto(gallery.preview_photo) : null,
     translations: parseTranslationData(gallery.translations),
     photos:
       gallery.photos
