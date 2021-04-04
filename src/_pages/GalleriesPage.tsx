@@ -24,15 +24,17 @@ export const GalleriesPage: NextPage<GalleriesPageProps> = ({ data }) => {
       <GalleriesArticle>
         <PageTitle>{data.translations[language].title}</PageTitle>
         <GalleryList initial="initial" animate="enter" variants={containerTransitions}>
-          {data.galleries.map((gallery) => (
-            <GalleryListItem key={gallery.id} variants={itemTransitions}>
-              <Link href={`${router.asPath}/${gallery.translations[language].slug}`} passHref>
-                <GalleryLink>
-                  <GalleryPreview gallery={gallery} language={language} />
-                </GalleryLink>
-              </Link>
-            </GalleryListItem>
-          ))}
+          {data.galleries
+            ?.filter((gallery) => gallery.photos.length > 0)
+            .map((gallery) => (
+              <GalleryListItem key={gallery.id} variants={itemTransitions}>
+                <Link href={`${router.asPath}/${gallery.translations[language].slug}`} passHref>
+                  <GalleryLink>
+                    <GalleryPreview gallery={gallery} language={language} />
+                  </GalleryLink>
+                </Link>
+              </GalleryListItem>
+            ))}
         </GalleryList>
       </GalleriesArticle>
     </Main>

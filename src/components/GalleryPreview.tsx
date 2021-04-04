@@ -8,13 +8,15 @@ type GalleryPreviewProps = {
 };
 
 export const GalleryPreview: React.FC<GalleryPreviewProps> = ({ gallery, language }) => {
+  const previewPhoto = gallery.preview_photo || gallery.photos[0];
+
   return (
     <>
       <GalleryTitle>{gallery.translations[language].name}</GalleryTitle>
       <PreviewImageWrapper>
         <AnimatedPhoto
-          src={gallery.preview_photo.url}
-          alt={gallery.preview_photo.translations[language].alt_text}
+          src={previewPhoto.url}
+          alt={previewPhoto.translations[language].alt_text}
           layout="fill"
           objectFit="cover"
           opacityOnly
