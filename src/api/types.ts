@@ -26,7 +26,7 @@ export type CommonData = {
   date_updated: string | null;
   phone_number: string;
   email_address: string;
-  telegram_nickname: string;
+  instagram_user: string;
   translations: {
     [key in LanguageCode]: {
       id: number;

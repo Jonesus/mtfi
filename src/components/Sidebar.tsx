@@ -71,8 +71,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => 
               <ContactInfo href={`mailto:${commonData.email_address}`}>
                 <MailIcon /> {commonData.email_address}
               </ContactInfo>
-              <ContactInfo href={`https://t.me/${commonData.telegram_nickname.replace('@', '')}`}>
-                <InstagramIcon /> {commonData.telegram_nickname}
+              <ContactInfo
+                href={`https://www.instagram.com/${commonData.instagram_user.replace('@', '')}/`}
+              >
+                <InstagramIcon /> {commonData.instagram_user}
               </ContactInfo>
             </Contacts>
             <StyledLanguagePicker route={currentRoute} />
