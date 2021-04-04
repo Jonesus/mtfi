@@ -6,6 +6,7 @@ import {
   FrontPageData,
   GalleriesPageData,
   LANGUAGE_KEYS,
+  LANGUAGES,
   PageData,
   Photo,
 } from 'api/types';
@@ -14,11 +15,13 @@ export const parseDate = (data: string | null) => (data ? new Date(data) : null)
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const parseTranslationData = (data: any[]) =>
-  data.reduce((acc, curr) => {
-    const lang = curr.languages_code as keyof typeof LANGUAGE_KEYS;
-    const data = { [LANGUAGE_KEYS[lang]]: curr };
-    return { ...acc, ...data };
-  }, {});
+  data
+    ? data.reduce((acc, curr) => {
+        const lang = curr.languages_code as keyof typeof LANGUAGE_KEYS;
+        const data = { [LANGUAGE_KEYS[lang]]: curr };
+        return { ...acc, ...data };
+      }, {})
+    : Object.fromEntries(LANGUAGES.map((lang) => [lang, {}]));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const parsePhoto = (data: any): Photo => ({
