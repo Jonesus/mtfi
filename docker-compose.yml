@@ -9,8 +9,6 @@ services:
       - ./directus:/docker-entrypoint-initdb.d
     env_file:
       - .env
-    networks:
-      - mtfi
     restart: unless-stopped
 
   mtfi-cms:
@@ -23,8 +21,6 @@ services:
       - mtfi-database
     env_file:
       - .env
-    networks:
-      - mtfi
     restart: unless-stopped
 
   mtfi-web:
@@ -37,8 +33,6 @@ services:
       - mtfi-cms
     env_file:
       - .env
-    networks:
-      - mtfi
     restart: unless-stopped
 
   mtfi-caddy:
@@ -51,14 +45,11 @@ services:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - ./caddy/data:/data
       - ./caddy/config:/config
-    networks:
-      - mtfi
     restart: unless-stopped
 
   wait:
     image: dokku/wait
-    networks:
-      - mtfi
 
 networks:
-  mtfi:
+  default:
+    name: mtfi
