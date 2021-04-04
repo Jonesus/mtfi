@@ -23,8 +23,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ pageRoutes, currentPage }) => 
   const currentRoute = pageRoutes.find(
     (route) => route.template === currentPage && route.id === pageId
   );
-  console.log(pageId);
-  console.log(pageRoutes);
 
   return (
     <AnimatePresence exitBeforeEnter>

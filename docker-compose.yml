@@ -28,7 +28,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      network: mtfi_mtfi
+      network: mtfi
     depends_on:
       - mtfi-cms
     env_file:
