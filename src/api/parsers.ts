@@ -63,7 +63,7 @@ export const parseGalleriesPageData = (data: any): GalleriesPageData => ({
   translations: parseTranslationData(data?.translations),
   galleries: data?.galleries.map((gallery: any) => ({
     ...gallery,
-    preview_photo: gallery.preview_photo ? parsePhoto(gallery.preview_photo) : null,
+    preview_photo: gallery.preview_photo ? parsePhoto(gallery.preview_photo) : {},
     translations: parseTranslationData(gallery.translations),
     photos:
       gallery.photos
