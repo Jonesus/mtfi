@@ -40,10 +40,11 @@ export const parseCommonData = (data: any): CommonData => ({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const parseFrontPageData = (data: any): FrontPageData => ({
   ...data,
-  highlight_photos: data?.highlight_photos
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .sort((a: any, b: any) => a.frontpage_sort - b.frontpage_sort)
-    .map(parsePhoto),
+  highlight_photos:
+    data?.highlight_photos
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ?.sort((a: any, b: any) => a.frontpage_sort - b.frontpage_sort)
+      .map(parsePhoto) || [],
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,11 +62,12 @@ export const parseGalleriesPageData = (data: any): GalleriesPageData => ({
     ...gallery,
     preview_photo: parsePhoto(gallery.preview_photo),
     translations: parseTranslationData(gallery.translations),
-    photos: gallery.photos
-      .sort((a: any, b: any) => a.sort - b.sort)
-      .map((data: any) => data.photos_id)
-      .filter((item: any) => item)
-      .map(parsePhoto),
+    photos:
+      gallery.photos
+        ?.sort((a: any, b: any) => a.sort - b.sort)
+        .map((data: any) => data.photos_id)
+        .filter((item: any) => item)
+        .map(parsePhoto) || [],
     /* eslint-enable @typescript-eslint/no-explicit-any */
   })),
 });
