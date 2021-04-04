@@ -15,7 +15,7 @@ services:
 
   mtfi-cms:
     container_name: mtfi-cms
-    image: directus/directus:v9.0.0-rc.31
+    image: directus/directus:v9.0.0-rc.30
     volumes:
       - ./directus/extensions:/directus/extensions
       - ./directus/uploads:/directus/uploads
