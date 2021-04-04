@@ -7,6 +7,10 @@ type AnimatedPhotoProps = ImageProps & {
   staggerIndex?: number;
 };
 
+function directusLoader({ src, width, quality }: { src: string; width: number; quality?: number }) {
+  return `${src}?width=${width}&quality=${quality || 75}`;
+}
+
 function isElementInViewport(rect: DOMRect | null) {
   if (typeof window !== 'undefined' && typeof document !== 'undefined' && rect !== null) {
     return (
@@ -47,7 +51,7 @@ export const AnimatedPhoto: React.FC<AnimatedPhotoProps> = ({
       opacityOnly={opacityOnly}
       skipStagger={!isElementInViewport(wrapperRect)}
     >
-      <Image {...props} onLoad={onImageLoad} />;
+      <Image {...props} onLoad={onImageLoad} loader={directusLoader} />;
     </TransitionWrapper>
   );
 };
