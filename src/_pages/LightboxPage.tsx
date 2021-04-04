@@ -1,10 +1,10 @@
 import { useAppContext } from 'api/context';
 import { LightboxData } from 'api/types';
+import { AnimatedPhoto } from 'components/AnimatedPhoto';
 import { BackArrow, Cross, ForwardArrow } from 'components/Icons';
 import { SrOnly } from 'components/SrOnly';
 import { AnimatePresence, motion } from 'framer-motion';
 import { NextPage } from 'next';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useKeyPressEvent, usePrevious } from 'react-use';
 import styled from 'styled-components';
@@ -74,11 +74,12 @@ export const LightboxPage: NextPage<LightboxProps> = ({ data: { photos, currentP
             exit={{ opacity: 0, y: 30, transition: { duration: 0.15 } }}
             transition={{ duration: 0.3 }}
           >
-            <Image
+            <AnimatedPhoto
               src={focusedPhoto.url}
               alt={focusedPhoto.translations[language].alt_text}
               layout="fill"
               objectFit="contain"
+              opacityOnly
             />
           </ImageContainer>
           <ImageDescription
