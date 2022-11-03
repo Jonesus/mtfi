@@ -51,7 +51,7 @@ export const AnimatedPhoto: React.FC<AnimatedPhotoProps> = ({
       opacityOnly={opacityOnly}
       skipStagger={!isElementInViewport(wrapperRect)}
     >
-      <Image {...props} onLoad={onImageLoad} loader={directusLoader} />;
+      <Image {...props} onLoad={onImageLoad} loader={directusLoader} />
     </TransitionWrapper>
   );
 };
