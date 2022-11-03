@@ -140,8 +140,10 @@ const ContactPageWrapper = styled(Article)`
 `;
 
 const Form = styled(motion.form)`
-  position: relative;
   --border-style: 1px solid var(--black);
+
+  position: relative;
+  padding-bottom: 3rem;
 
   & > * + * {
     margin-top: 1rem;
