@@ -18,9 +18,9 @@ module.exports = function registerHook({ env }) {
         });
 
         await transporter.sendMail({
-          to: 'joonas.palosuo@gmail.com',
-          subject: `sup from ${payload.email}`,
-          html: payload.text.replaceAll('\n', '<br>'),
+          to: env.EMAIL_NOTIFICATION_RECIPIENT,
+          subject: `New contact from ${payload.email}`,
+          html: payload.text.replace(/(\r\n|\n|\r)/gm, '<br>'),
         });
         return data;
       }
